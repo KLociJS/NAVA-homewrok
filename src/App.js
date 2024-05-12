@@ -2,6 +2,7 @@ import { Container, CssBaseline, ThemeProvider } from "@mui/material";
 
 import { useEffect, useState } from "react";
 import PreviewImage from "./components/ListView/PreviewImage";
+import SearchInput from "./components/SearchInput/SearchInput";
 import { getResponseData } from "./data/apiResponse";
 import theme from "./style";
 
@@ -16,7 +17,11 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container sx={{ display: "flex", flexWrap: "wrap", p: 4 }}>
+      <SearchInput />
+      <Container
+        component='main'
+        sx={{ display: "flex", flexWrap: "wrap", px: 4, py: 2, maxWidth: 1200 }}
+      >
         {response.map((image) => (
           <PreviewImage
             key={image.id}

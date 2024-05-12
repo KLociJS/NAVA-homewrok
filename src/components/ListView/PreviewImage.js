@@ -40,7 +40,12 @@ export default function PreviewImage({
   };
 
   return (
-    <Card elevation={0} sx={cardStyle} onClick={() => setIsFullScreen(true)}>
+    <Card
+      elevation={0}
+      sx={cardStyle}
+      onClick={() => setIsFullScreen(true)}
+      tabIndex={0}
+    >
       <Thumbnail title={title} imgUrl={imgUrl} />
 
       <Box sx={cardDataContainerStyle}>
