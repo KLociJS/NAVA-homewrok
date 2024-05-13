@@ -32,7 +32,7 @@ function SearchInput() {
     },
     gap: 2,
     width: 1200,
-    px: 5,
+    px: { desktop: 6.75, tablet: 4 },
     py: 4,
   };
 
@@ -80,7 +80,7 @@ function SearchInput() {
       <Drawer anchor='top' open={show} onClose={handleShowFilter}>
         <Box sx={{ p: 4, display: "flex", flexDirection: "column", gap: 2 }}>
           <FormControl variant='outlined' fullWidth>
-            <InputLabel id='search-type-input-label'>Search Type</InputLabel>
+            <InputLabel id='search-type-input-label'>Filter Type</InputLabel>
             <Select
               labelId='search-type-input-label'
               id='search-type-select'
@@ -106,7 +106,7 @@ function SearchInput() {
           ) : (
             <TextField
               type='search'
-              label='Search'
+              label='Filter'
               onChange={handleTextInputChange}
               value={searchTextValue}
               autoFocus
@@ -117,12 +117,12 @@ function SearchInput() {
       </Drawer>
       <Box component='form' sx={searchFormStyle}>
         <FormControl variant='outlined' sx={{ width: "30%" }}>
-          <InputLabel id='search-type-input-label'>Search Type</InputLabel>
+          <InputLabel id='search-type-input-label'>Filter Type</InputLabel>
           <Select
             labelId='search-type-input-label'
             id='search-type-select'
             value={searchType}
-            label='Search Type'
+            label='Filter Type'
             onChange={handleTypeChange}
           >
             {searchTypes.map((type) => (
@@ -144,7 +144,7 @@ function SearchInput() {
         ) : (
           <TextField
             type='search'
-            label='Search'
+            label='Filter'
             onChange={handleTextInputChange}
             value={searchTextValue}
             sx={{ width: "70%" }}

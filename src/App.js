@@ -20,7 +20,14 @@ function App() {
       <SearchInput />
       <Container
         component='main'
-        sx={{ display: "flex", flexWrap: "wrap", px: 4, py: 2, maxWidth: 1200 }}
+        sx={{
+          display: "flex",
+          gap: { mobile: 1, tablet: 1, desktop: 0 },
+          flexWrap: "wrap",
+          px: 4,
+          py: 2,
+          maxWidth: 1200,
+        }}
       >
         {response.map((image) => (
           <PreviewImage

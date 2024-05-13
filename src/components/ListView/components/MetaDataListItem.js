@@ -28,7 +28,7 @@ function MetaDataListItem({ index, data }) {
   const listItemStyle = {
     gap: 0.5,
     padding: 0,
-    width: "auto",
+    flexBasis: "100%",
   };
 
   const listItemTextStyle = {

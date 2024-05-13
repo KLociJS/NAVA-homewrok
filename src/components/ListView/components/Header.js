@@ -1,13 +1,22 @@
-import { Box, CardHeader, Typography } from "@mui/material";
+import { useTheme } from "@emotion/react";
+import { Box, CardHeader, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import { HiOutlineClock } from "react-icons/hi2";
 import { PiClockClockwise } from "react-icons/pi";
 import TextWithIcon from "../../TextWithIcon";
 
 function ListViewCardHeader({ title, createdAt, updatedAt }) {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("desktop"));
+
   const cardHeaderStyle = {
     px: 2,
     py: 0,
+    fontSize: {
+      mobile: 16,
+      tablet: 16,
+      desktop: 20,
+    },
   };
 
   const cardSubheaderContainer = {
@@ -17,7 +26,9 @@ function ListViewCardHeader({ title, createdAt, updatedAt }) {
 
   return (
     <CardHeader
-      title={title}
+      title={
+        <Typography variant={isSmallScreen ? "h6" : "h5"}>{title}</Typography>
+      }
       subheader={
         <Box sx={cardSubheaderContainer}>
           <TextWithIcon>

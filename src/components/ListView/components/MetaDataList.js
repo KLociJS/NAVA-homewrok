@@ -3,12 +3,15 @@ import React from "react";
 
 function MetaDataList({ children }) {
   const metaDataListStyle = {
-    display: "flex",
+    display: {
+      desktop: "flex",
+      tablet: "none",
+      mobile: "none",
+    },
     gap: 4,
+    px: 2,
     pt: 0,
-    pr: 2,
     pb: 1,
-    pl: 2,
   };
 
   return (
