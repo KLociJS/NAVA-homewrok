@@ -1,7 +1,7 @@
 import { useTheme } from "@emotion/react";
 import { Box, CardHeader, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
-import { HiOutlineClock } from "react-icons/hi2";
+import { CiCalendar } from "react-icons/ci";
 import { PiClockClockwise } from "react-icons/pi";
 import TextWithIcon from "../../TextWithIcon";
 
@@ -32,7 +32,7 @@ function ListViewCardHeader({ title, createdAt, updatedAt }) {
       subheader={
         <Box sx={cardSubheaderContainer}>
           <TextWithIcon>
-            <HiOutlineClock />
+            <CiCalendar />
             <Typography variant='body2'>{createdAt}</Typography>
           </TextWithIcon>
           <TextWithIcon>

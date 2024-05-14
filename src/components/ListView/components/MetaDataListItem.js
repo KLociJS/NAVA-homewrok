@@ -20,7 +20,7 @@ const metaDataTypes = [
   },
   {
     icon: <RxSize />,
-    text: "Image Size",
+    text: "Resolution",
   },
 ];
 

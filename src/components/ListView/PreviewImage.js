@@ -10,6 +10,7 @@ import {
 import React, { useMemo, useState } from "react";
 import { MdOutlineExpandMore } from "react-icons/md";
 import { IMG_API_URL } from "../../constants/constants";
+import { useImageDataContext } from "../../context/ImageDataContext";
 import DetailedView from "../DetailedView/DetailedView";
 import ExpandableMetadataList from "./components/ExpandableMetadataList";
 import Header from "./components/Header";
@@ -28,12 +29,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function PreviewImage({
-  title,
-  createdAt,
-  updatedAt,
-  metadata,
-}) {
+export default function PreviewImage() {
   const imgUrl = useMemo(() => {
     const randomWidth = Math.floor(Math.random() * 1300) + 600;
     const randomHeight = Math.floor(Math.random() * 1300) + 600;
@@ -42,6 +38,8 @@ export default function PreviewImage({
 
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [expanded, setExpanded] = useState(false);
+
+  const data = useImageDataContext();
 
   const handleFullscreenChange = () => {
     setIsFullScreen((prev) => !prev);
@@ -80,7 +78,7 @@ export default function PreviewImage({
       desktop: 1.75,
     },
     "&:hover": {
-      cursor: "pointer",
+      cursor: isFullScreen ? "auto" : "pointer",
       backgroundColor: "action.hover",
     },
   };
@@ -96,22 +94,37 @@ export default function PreviewImage({
     <Card
       elevation={0}
       sx={cardStyle}
-      onClick={() => setIsFullScreen(true)}
+      onClick={handleFullscreenChange}
       tabIndex={0}
     >
-      <Thumbnail title={title} imgUrl={imgUrl} />
+      <Thumbnail title={data.description_str[0]} imgUrl={imgUrl} />
 
       <Box sx={cardDataContainerStyle}>
-        <Header title={title} createdAt={createdAt} updatedAt={updatedAt} />
+        <Header
+          title={data.description_str[0]}
+          createdAt={data.createDate_dt.slice(0, 10).replace(/-/g, "/")}
+          updatedAt={data.harvestDate_dt.slice(0, 10).replace(/-/g, "/")}
+        />
 
         <MetaDataList>
-          {metadata.map((data, index) => (
-            <MetaDataListItem key={index} index={index} data={data} />
+          {[
+            data.id,
+            data.filename_str[0],
+            data.format_str[0],
+            `${data.ow_i} x ${data.oh_i}`,
+          ].map((data, index) => (
+            <MetaDataListItem key={data.id} index={index} data={data} />
           ))}
         </MetaDataList>
+
         <ExpandableMetadataList expanded={expanded}>
-          {metadata.map((data, index) => (
-            <MetaDataListItem key={index} index={index} data={data} />
+          {[
+            data.id,
+            data.filename_str[0],
+            data.format_str[0],
+            `${data.ow_i} x ${data.oh_i}`,
+          ].map((data, index) => (
+            <MetaDataListItem key={data.id} index={index} data={data} />
           ))}
         </ExpandableMetadataList>
 
@@ -142,7 +155,9 @@ export default function PreviewImage({
       </Box>
       <DetailedView
         isFullScreen={isFullScreen}
-        handleChange={handleFullscreenChange}
+        handleClose={handleFullscreenChange}
+        imgUrl={imgUrl}
+        data={data}
       />
     </Card>
   );
