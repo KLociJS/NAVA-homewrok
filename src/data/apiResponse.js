@@ -1051,6 +1051,12 @@ const response = [
   },
 ];
 
-export const getResponseData = (start) => {
-  return response.slice(start, start + 10);
+export const getResponseData = (end) => {
+  console.log("fetching data...");
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log("data fetched");
+      resolve(response.slice(end - 10, end));
+    }, 1000);
+  });
 };
