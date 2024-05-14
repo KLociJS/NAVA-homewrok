@@ -8,6 +8,9 @@ import {
 
 import { useCallback, useEffect, useState } from "react";
 import PreviewImage from "./components/ListView/PreviewImage";
+import DesktopSkeleton from "./components/ListView/components/skeleton/DesktopSkeleton";
+import MobileSkeleton from "./components/ListView/components/skeleton/MobileSkeleton";
+import TabletSkeleton from "./components/ListView/components/skeleton/TabletSkeleton";
 import SearchInput from "./components/SearchInput/SearchInput";
 import { ImageDataContextProvider } from "./context/ImageDataContext";
 import { getResponseData } from "./data/apiResponse";
@@ -17,7 +20,6 @@ function App() {
   const [response, setResponse] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [pageCount, setPageCount] = useState(1);
-  console.log(response);
 
   const fetchData = useCallback(() => {
     setIsLoaded(true);
@@ -49,13 +51,21 @@ function App() {
     maxWidth: 1200,
   };
 
+  const skeletonContainerStyle = {
+    px: { desktop: 3 },
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <SearchInput />
       <Container component='main' sx={mainContainerStyle}>
         {isLoaded ? (
-          <p>Loading...</p>
+          <Box sx={skeletonContainerStyle}>
+            <DesktopSkeleton />
+            <TabletSkeleton />
+            <MobileSkeleton />
+          </Box>
         ) : (
           <>
             {response.map((data) => (
