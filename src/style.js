@@ -8,6 +8,11 @@ const theme = createTheme({
       desktop: 1100,
     },
   },
+  palette: {
+    background: {
+      default: "#EFF1F3",
+    },
+  },
 });
 
 export default theme;

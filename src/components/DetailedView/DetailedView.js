@@ -51,7 +51,7 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
     },
     flexShrink: 1,
     overflowY: "auto",
-    backgroundColor: "background.paper",
+    backgroundColor: "background.default",
   };
 
   const closeButtonStyle = {

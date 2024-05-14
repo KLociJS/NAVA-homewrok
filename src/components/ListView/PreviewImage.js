@@ -51,6 +51,7 @@ export default function PreviewImage() {
   };
 
   const cardStyle = {
+    backgroundColor: "background.default",
     display: "flex",
     flexDirection: {
       mobile: "column",
@@ -64,7 +65,6 @@ export default function PreviewImage() {
       tablet: "45%",
       desktop: 1,
     },
-
     position: "relative",
     gap: 2,
     px: {
