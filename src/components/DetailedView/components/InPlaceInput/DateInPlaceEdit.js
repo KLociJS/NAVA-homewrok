@@ -2,39 +2,41 @@ import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
-import React, { useState } from "react";
+import React from "react";
 import { MdEdit } from "react-icons/md";
 import { usePublicImageDataContext } from "../../../../context/PublicImageDataContext";
 import formatDate from "../../../../util/formatDate";
+import useInPlaceInput from "./hooks/useInPlaceInput";
 
 function DateInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
   const { publicData, setPublicData } = usePublicImageDataContext();
 
-  const [data, setData] = useState(dayjs(publicData.captureDate));
-  const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
-
-  const handleEditVisibilityChange = () => {
-    setIsEditing((prev) => !prev);
-    setHasError(false);
-  };
-
-  const handleInputChange = (date) => {
-    setData(date);
-  };
+  const {
+    data,
+    isEditing,
+    isLoading,
+    setIsLoading,
+    hasError,
+    setHasError,
+    handleToggleEditVisibility,
+    handleInputChange,
+  } = useInPlaceInput(dayjs(publicData.captureDate));
 
   const handleSave = () => {
+    setIsLoading(true);
     apiCallHandler({ captureDate: data }, `api/public/capture-date`)
       .then((res) => {
         console.log(res);
         setPublicData((prev) => ({ ...prev, captureDate: data }));
-        handleEditVisibilityChange();
+        handleToggleEditVisibility();
         handleToggleAlertVisibility("Capture date was updated successfully.");
       })
       .catch((error) => {
         setHasError(true);
         console.log(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -66,7 +68,7 @@ function DateInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
           <Typography variant='overline' gutterBottom sx={headingStyle}>
             Capture Date
           </Typography>
-          <IconButton onClick={handleEditVisibilityChange}>
+          <IconButton onClick={handleToggleEditVisibility}>
             <MdEdit size={16} />
           </IconButton>
         </Box>
@@ -108,10 +110,14 @@ function DateInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
         <Box
           sx={{ display: "flex", gap: 1, justifyContent: "flex-end", mt: 1 }}
         >
-          <Button variant='outlined' onClick={handleEditVisibilityChange}>
+          <Button
+            variant='outlined'
+            onClick={handleToggleEditVisibility}
+            disabled={isLoading}
+          >
             Cancel
           </Button>
-          <Button variant='contained' onClick={handleSave}>
+          <Button variant='contained' onClick={handleSave} disabled={isLoading}>
             Save
           </Button>
         </Box>

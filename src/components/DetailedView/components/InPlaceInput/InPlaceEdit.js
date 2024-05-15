@@ -6,10 +6,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
 import { MdEdit } from "react-icons/md";
 import { usePublicImageDataContext } from "../../../../context/PublicImageDataContext";
 import TextArea from "./Textarea";
+import useInPlaceInput from "./hooks/useInPlaceInput";
 
 function InPlaceEdit({
   heading,
@@ -25,19 +25,16 @@ function InPlaceEdit({
 
   const { publicData, setPublicData } = usePublicImageDataContext();
 
-  const [data, setData] = useState(publicData[name]);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
-
-  const handleEditVisibilityChange = () => {
-    setIsEditing((prev) => !prev);
-    setHasError(false);
-  };
-
-  const handleInputChange = (e) => {
-    setData(e.target.value);
-  };
+  const {
+    data,
+    isEditing,
+    isLoading,
+    setIsLoading,
+    hasError,
+    setHasError,
+    handleToggleEditVisibility,
+    handleInputChange,
+  } = useInPlaceInput(publicData[name]);
 
   const handleSave = () => {
     setIsLoading(true);
@@ -45,7 +42,7 @@ function InPlaceEdit({
       .then((res) => {
         console.log(res);
         setPublicData((prev) => ({ ...prev, [name]: data }));
-        handleEditVisibilityChange();
+        handleToggleEditVisibility();
         handleToggleAlertVisibility(`${name} was updated successfully.`);
       })
       .catch((error) => {
@@ -85,7 +82,7 @@ function InPlaceEdit({
           <Typography variant='overline' gutterBottom sx={headingStyle}>
             {heading}
           </Typography>
-          <IconButton onClick={handleEditVisibilityChange}>
+          <IconButton onClick={handleToggleEditVisibility}>
             <MdEdit size={iconSize} />
           </IconButton>
         </Box>
@@ -110,7 +107,7 @@ function InPlaceEdit({
             </Typography>
             <TextField
               value={data}
-              onChange={handleInputChange}
+              onChange={(e) => handleInputChange(e.target.value)}
               variant='outlined'
               sx={{ width: 1 }}
               error={hasError}
@@ -124,7 +121,7 @@ function InPlaceEdit({
             </Typography>
             <TextArea
               value={data}
-              onChange={handleInputChange}
+              onChange={(e) => handleInputChange(e.target.value)}
               label={name}
               error={hasError}
               helperText={`Error saving ${name}`}
@@ -136,7 +133,7 @@ function InPlaceEdit({
         >
           <Button
             variant='outlined'
-            onClick={handleEditVisibilityChange}
+            onClick={handleToggleEditVisibility}
             disabled={isLoading}
           >
             Cancel

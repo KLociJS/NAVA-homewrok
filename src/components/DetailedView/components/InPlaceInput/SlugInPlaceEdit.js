@@ -1,24 +1,22 @@
 import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { MdEdit } from "react-icons/md";
 import { usePublicImageDataContext } from "../../../../context/PublicImageDataContext";
+import useInPlaceInput from "./hooks/useInPlaceInput";
 
 function SlugInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
   const { publicData, setPublicData } = usePublicImageDataContext();
 
-  const [data, setData] = useState(publicData.slug);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasError, setHasError] = useState(false);
-
-  const handleEditVisibilityToggle = () => {
-    setIsEditing((prev) => !prev);
-    setHasError(false);
-  };
-
-  const handleInputChange = (e) => {
-    setData(e.target.value);
-  };
+  const {
+    data,
+    isEditing,
+    isLoading,
+    setIsLoading,
+    hasError,
+    setHasError,
+    handleToggleEditVisibility,
+    handleInputChange,
+  } = useInPlaceInput(publicData.slug);
 
   const handleSave = () => {
     setIsLoading(true);
@@ -26,7 +24,7 @@ function SlugInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
       .then((res) => {
         console.log(res);
         setPublicData((prev) => ({ ...prev, slug: data }));
-        handleEditVisibilityToggle();
+        handleToggleEditVisibility();
         handleToggleAlertVisibility("Slug was updated successfully.");
       })
       .catch((error) => {
@@ -61,7 +59,7 @@ function SlugInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
           <Typography variant='h6' sx={headingStyle}>
             {publicData.slug}
           </Typography>
-          <IconButton onClick={handleEditVisibilityToggle}>
+          <IconButton onClick={handleToggleEditVisibility}>
             <MdEdit size={20} />
           </IconButton>
         </Box>
@@ -86,7 +84,7 @@ function SlugInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
         <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-end" }}>
           <Button
             variant='outlined'
-            onClick={handleEditVisibilityToggle}
+            onClick={handleToggleEditVisibility}
             disabled={isLoading}
           >
             Cancel
