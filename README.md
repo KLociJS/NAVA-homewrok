@@ -6,7 +6,8 @@ The Image Management System is a user-friendly web application meticulously craf
 ## Usage:
 To toggle between successful and unsuccessful API responses, modify the `IS_API_RESPONSE_SUCCESSFUL` variable in the `src/constants/constants.js` file. By default, it is set to `true`.
 
-## [Figma design](https://www.figma.com/design/OZl2r5XrgsFxXWZ9yYlPFK/NAVA---Homework?node-id=9607%3A7158&t=Z5mEUPKP2xShiUJU-1)
+## Figma design
+Click [here](https://www.figma.com/design/OZl2r5XrgsFxXWZ9yYlPFK/NAVA---Homework?node-id=9607%3A7158&t=Z5mEUPKP2xShiUJU-1) to check out figma design file.
 
 ## Installation:
 To set up and run this project locally, follow these steps:
