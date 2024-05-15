@@ -5,8 +5,6 @@ import {
   Pagination,
   ThemeProvider,
 } from "@mui/material";
-
-import { useCallback, useEffect, useState } from "react";
 import PreviewImage from "./components/ListView/PreviewImage";
 import DesktopSkeleton from "./components/ListView/components/skeleton/DesktopSkeleton";
 import MobileSkeleton from "./components/ListView/components/skeleton/MobileSkeleton";
@@ -15,60 +13,40 @@ import SearchInput from "./components/SearchInput/SearchInput";
 import UserActionAlert from "./components/UserActionAlert";
 import { ImageDataContextProvider } from "./context/ImageDataContext";
 import { UserActionAlertContextProvider } from "./context/UserActionAlertContext";
-import { getResponseData } from "./data/apiResponse";
 import useAlertHook from "./hooks/useAlertHook";
+import useFetchImageData from "./hooks/useFetchImageData";
+import usePagination from "./hooks/usePagination";
 import theme from "./style";
 
 function App() {
-  const [response, setResponse] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [pageCount, setPageCount] = useState(1);
-
-  const fetchData = useCallback(() => {
-    setIsLoaded(true);
-    getResponseData(pageCount * 10)
-      .then((data) => {
-        setIsLoaded(false);
-        setResponse(data);
-      })
-      .catch((error) => {
-        setIsLoaded(false);
-        console.error("Error fetching data: ", error);
-      });
-  }, [pageCount]);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  const handlePageChange = (event, value) => {
-    setPageCount(value);
-  };
+  const { pageCount, handlePageChange } = usePagination();
+  const { response, isLoaded } = useFetchImageData(pageCount);
 
   const { isAlertVisible, handleToggleAlertVisibility, severity, message } =
     useAlertHook();
-
-  const mainContainerStyle = {
-    display: "flex",
-    gap: { mobile: 1, tablet: 1, desktop: 0 },
-    flexWrap: "wrap",
-    px: 4,
-    py: 2,
-    maxWidth: 1200,
-    position: "relative",
-  };
-
-  const skeletonContainerStyle = {
-    px: { desktop: 3 },
-  };
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <SearchInput />
-      <Container component='main' sx={mainContainerStyle}>
+      <Container
+        component='main'
+        sx={{
+          display: "flex",
+          gap: { mobile: 1, tablet: 1, desktop: 0 },
+          flexWrap: "wrap",
+          px: 4,
+          py: 2,
+          maxWidth: 1200,
+          position: "relative",
+        }}
+      >
         {isLoaded ? (
-          <Box sx={skeletonContainerStyle}>
+          <Box
+            sx={{
+              px: { desktop: 3 },
+            }}
+          >
             <DesktopSkeleton />
             <TabletSkeleton />
             <MobileSkeleton />
