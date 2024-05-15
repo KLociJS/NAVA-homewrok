@@ -1,8 +1,10 @@
 import { Box } from "@mui/material";
 import React, { useState } from "react";
 import { PublicImageDataContextProvider } from "../../../context/PublicImageDataContext";
+import AkrLabels from "./AkrLabels";
 import CustomTabPanel from "./CustomTabPanel";
-import InPlaceEdit from "./InPlaceEdit";
+import DateInPlaceEdit from "./InPlaceInput/DateInPlaceEdit";
+import InPlaceEdit from "./InPlaceInput/InPlaceEdit";
 import SlugInPlaceEdit from "./InPlaceInput/SlugInPlaceEdit";
 
 const mockData = {
@@ -16,6 +18,7 @@ const mockData = {
   captureDate: "2023-03-19T02:36:57Z",
   photographer: "Szergej Ilnyickij",
   inviduals: "Sarah",
+  akrCodes: ["sport", "tennis", "gymnastics", "match", "competition"],
 };
 
 const mockAPICall = (data, url) => {
@@ -72,6 +75,9 @@ function PublicDataTabPanel({ currentVisibleIndex }) {
             iconSize={16}
             heading={"Background"}
           />
+
+          <DateInPlaceEdit apiCallHandler={mockAPICall} />
+          <AkrLabels />
         </Box>
       </PublicImageDataContextProvider>
     </CustomTabPanel>

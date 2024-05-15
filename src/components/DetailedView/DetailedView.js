@@ -1,6 +1,6 @@
-import { Box, Grow, IconButton, Tab, Tabs } from "@mui/material";
+import { Box, Button, Grow, IconButton, Tab, Tabs } from "@mui/material";
 import React, { useState } from "react";
-import { MdClose } from "react-icons/md";
+import { MdClose, MdDelete, MdNavigateBefore } from "react-icons/md";
 import { useImageDataContext } from "../../context/ImageDataContext";
 import MetaDataTabPanel from "./components/MetaDataTabPanel";
 import PublicDataTabPanel from "./components/PublicDataTabPanel";
@@ -23,6 +23,19 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
   const handleOverlayClose = (e) => {
     e.stopPropagation();
     handleClose();
+  };
+
+  const handleDelete = () => {
+    console.log(`sending delete request to url: api/image/${data.id}`);
+
+    new Promise((resolve) => {
+      setTimeout(() => {
+        resolve("Data deleted on server");
+      }, 1000);
+    }).then((res) => {
+      console.log(res);
+      handleClose();
+    });
   };
 
   const detailedViewOverlyStyle = {
@@ -54,12 +67,6 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
     backgroundColor: "background.default",
   };
 
-  const closeButtonStyle = {
-    position: "absolute",
-    left: 0,
-    top: 0,
-  };
-
   const imageContainerStyle = {
     width: { mobile: 1, tablet: 1, desktop: 2 / 3 },
     display: "flex",
@@ -73,24 +80,29 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
     },
   };
 
-  const imageStyle = {
-    maxWidth: "100%",
-    objectFit: "contain",
-    borderRadius: 4,
-  };
-
   return (
     <Grow in={isFullScreen}>
       <Box sx={detailedViewOverlyStyle} onClick={(e) => handleOverlayClose(e)}>
         <Box sx={detailedViewContentStyle} onClick={(e) => e.stopPropagation()}>
-          <IconButton sx={closeButtonStyle} onClick={handleClose}>
+          <IconButton
+            sx={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+            }}
+            onClick={handleClose}
+          >
             <MdClose size={30} />
           </IconButton>
           <Box sx={imageContainerStyle}>
             <img
               src={imgUrl}
               alt={data.description_str[0]}
-              style={imageStyle}
+              style={{
+                maxWidth: "100%",
+                objectFit: "contain",
+                borderRadius: 4,
+              }}
             />
           </Box>
           <Box sx={{ width: { desktop: "30%" } }}>
@@ -106,6 +118,26 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
             </Box>
             <MetaDataTabPanel data={data} currentVisibleIndex={value} />
             <PublicDataTabPanel currentVisibleIndex={value} />
+            <Box
+              sx={{ display: "flex", justifyContent: "space-between", px: 3 }}
+            >
+              <Button
+                variant='contained'
+                color='error'
+                startIcon={<MdDelete />}
+                onClick={handleDelete}
+              >
+                Delete
+              </Button>
+              <Button
+                variant='outlined'
+                color='primary'
+                startIcon={<MdNavigateBefore />}
+                onClick={handleClose}
+              >
+                Back
+              </Button>
+            </Box>
           </Box>
         </Box>
       </Box>

@@ -12,6 +12,9 @@ const theme = createTheme({
     background: {
       default: "#EFF1F3",
     },
+    warning: {
+      main: "#f44336",
+    },
   },
 });
 

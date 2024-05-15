@@ -1,45 +1,31 @@
-import {
-  Box,
-  Button,
-  Divider,
-  IconButton,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 import React, { useState } from "react";
 import { MdEdit } from "react-icons/md";
-import { usePublicImageDataContext } from "../../../context/PublicImageDataContext";
-import TextArea from "./InPlaceInput/Textarea";
+import { usePublicImageDataContext } from "../../../../context/PublicImageDataContext";
+import formatDate from "../../../../util/formatDate";
 
-function InPlaceEdit({
-  heading,
-  apiCallHandler,
-  name,
-  inputType,
-  iconSize = 20,
-}) {
-  if (inputType !== "text" && inputType !== "textarea") {
-    throw new Error("Invalid input type");
-  }
-
+function DateInPlaceEdit({ apiCallHandler }) {
   const { publicData, setPublicData } = usePublicImageDataContext();
 
-  const [data, setData] = useState(publicData[name]);
+  const [data, setData] = useState(dayjs(publicData.captureDate));
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEditVisibilityChange = () => {
     setIsEditing((prev) => !prev);
   };
 
-  const handleInputChange = (e) => {
-    setData(e.target.value);
+  const handleInputChange = (date) => {
+    setData(date);
   };
 
   const handleSave = () => {
-    apiCallHandler({ [name]: data }, `api/public/${name}`)
+    apiCallHandler({ captureDate: data }, `api/public/capture-date`)
       .then((res) => {
         console.log(res);
-        setPublicData((prev) => ({ ...prev, [name]: data }));
+        setPublicData((prev) => ({ ...prev, captureDate: data }));
         handleEditVisibilityChange();
       })
       .catch((error) => {
@@ -73,16 +59,16 @@ function InPlaceEdit({
           }}
         >
           <Typography variant='overline' gutterBottom sx={headingStyle}>
-            {heading}
+            Capture Date
           </Typography>
           <IconButton onClick={handleEditVisibilityChange}>
-            <MdEdit size={iconSize} />
+            <MdEdit size={16} />
           </IconButton>
         </Box>
 
         <Box sx={{ width: 1 }}>
           <Typography variant='body1' sx={contentStyle}>
-            {publicData[name]}
+            {formatDate(publicData.captureDate)}
           </Typography>
         </Box>
       </Box>
@@ -93,26 +79,17 @@ function InPlaceEdit({
           maxWidth: "320px",
         }}
       >
-        {inputType === "text" ? (
-          <>
-            <Typography variant='overline' gutterBottom sx={headingStyle}>
-              {heading}
-            </Typography>
-            <TextField
-              value={data}
-              onChange={handleInputChange}
-              variant='outlined'
-              sx={{ width: 1 }}
-            />
-          </>
-        ) : (
-          <>
-            <Typography variant='overline' gutterBottom sx={headingStyle}>
-              {heading}
-            </Typography>
-            <TextArea value={data} onChange={handleInputChange} label={name} />
-          </>
-        )}
+        <Typography variant='overline' gutterBottom sx={headingStyle}>
+          Capture Date
+        </Typography>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            onChange={(date) => handleInputChange(date)}
+            value={data}
+            sx={{ width: 1 }}
+          />
+        </LocalizationProvider>
+
         <Box
           sx={{ display: "flex", gap: 1, justifyContent: "flex-end", mt: 1 }}
         >
@@ -128,4 +105,4 @@ function InPlaceEdit({
   );
 }
 
-export default InPlaceEdit;
+export default DateInPlaceEdit;
