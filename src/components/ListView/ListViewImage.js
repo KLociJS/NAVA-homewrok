@@ -33,8 +33,8 @@ const ExpandMore = styled((props) => {
 
 export default function ListViewImage() {
   const imgUrl = useMemo(() => {
-    const randomWidth = Math.floor(Math.random() * 1300) + 600;
-    const randomHeight = Math.floor(Math.random() * 1300) + 600;
+    const randomWidth = Math.floor(Math.random() * (1500 - 1200 + 1)) + 1200;
+    const randomHeight = Math.floor(Math.random() * (1500 - 1200 + 1)) + 1200;
     return `${IMG_API_URL}${randomWidth}/${randomHeight}`;
   }, []);
 
