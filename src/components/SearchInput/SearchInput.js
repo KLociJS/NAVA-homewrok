@@ -11,9 +11,10 @@ import {
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import dayjs from "dayjs";
-import React, { useState } from "react";
+import React from "react";
 import { MdOutlineFilterAlt } from "react-icons/md";
+import useToggle from "../../hooks/useToggle";
+import useInput from "./hooks/useInput";
 
 const searchTypes = [
   { value: "freeText", label: "Free text" },
@@ -43,31 +44,21 @@ function SearchInput() {
     boxShadow: 1,
   };
 
-  const handleShowFilter = () => {
-    setShow((prev) => !prev);
-  };
+  const {
+    searchType,
+    searchTextValue,
+    searchDateValue,
+    handleTypeChange,
+    handleTextInputChange,
+    handleDateInputChange,
+  } = useInput();
 
-  const [searchType, setSearchType] = useState("freeText");
-  const [searchTextValue, setSearchTextValue] = useState();
-  const [searchDateValue, setSearchDateValue] = useState(dayjs("2022-04-17"));
-  const [show, setShow] = useState(false);
-
-  const handleTypeChange = (event) => {
-    setSearchType(event.target.value);
-  };
-
-  const handleTextInputChange = (event) => {
-    setSearchTextValue(event.target.value);
-  };
-
-  const handleDateInputChange = (date) => {
-    setSearchDateValue(date);
-  };
+  const { value: show, toggle: handleToggleFilter } = useToggle(false);
 
   return (
     <Box component='header' sx={searchContainerStyle}>
       <IconButton
-        onClick={handleShowFilter}
+        onClick={handleToggleFilter}
         sx={{
           display: { mobile: "block", tablet: "none" },
           position: "absolute",
@@ -77,7 +68,7 @@ function SearchInput() {
       >
         <MdOutlineFilterAlt size={32} />
       </IconButton>
-      <Drawer anchor='top' open={show} onClose={handleShowFilter}>
+      <Drawer anchor='top' open={show} onClose={handleToggleFilter}>
         <Box sx={{ p: 4, display: "flex", flexDirection: "column", gap: 2 }}>
           <FormControl variant='outlined' fullWidth>
             <InputLabel id='search-type-input-label'>Filter Type</InputLabel>
