@@ -25,20 +25,18 @@ const metaDataTypes = [
 ];
 
 function MetaDataListItem({ index, data }) {
-  const listItemStyle = {
-    gap: 0.5,
-    padding: 0,
-    flexBasis: "100%",
-  };
-
-  const listItemTextStyle = {
-    textWrap: "nowrap",
-  };
-
   return (
-    <ListItem sx={listItemStyle}>
+    <ListItem
+      sx={{
+        gap: 0.5,
+        padding: 0,
+        flexBasis: "100%",
+      }}
+    >
       <ListItemText
-        sx={listItemTextStyle}
+        sx={{
+          textWrap: "nowrap",
+        }}
         secondary={data}
         primary={
           <TextWithIcon>

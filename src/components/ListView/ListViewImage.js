@@ -7,7 +7,7 @@ import {
   styled,
 } from "@mui/material";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { MdOutlineExpandMore } from "react-icons/md";
 import { IMG_API_URL } from "../../constants/constants";
 import { useImageDataContext } from "../../context/ImageDataContext";
@@ -17,6 +17,8 @@ import Header from "./components/Header";
 import MetaDataList from "./components/MetaDataList";
 import MetaDataListItem from "./components/MetaDataListItem";
 import Thumbnail from "./components/Thumbnail";
+import useExpand from "./hooks/useExpand";
+import useToggleFullScreen from "./hooks/useToggleFullScreen";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -36,19 +38,10 @@ export default function ListViewImage() {
     return `${IMG_API_URL}${randomWidth}/${randomHeight}`;
   }, []);
 
-  const [isFullScreen, setIsFullScreen] = useState(false);
-  const [expanded, setExpanded] = useState(false);
+  const { isFullScreen, handleFullscreenChange } = useToggleFullScreen();
+  const { expanded, handleExpand } = useExpand();
 
   const data = useImageDataContext();
-
-  const handleFullscreenChange = () => {
-    setIsFullScreen((prev) => !prev);
-  };
-
-  const handleExpandClick = (e) => {
-    e.stopPropagation();
-    setExpanded(!expanded);
-  };
 
   const cardStyle = {
     backgroundColor: "background.default",
@@ -141,7 +134,7 @@ export default function ListViewImage() {
         >
           <ExpandMore
             expand={expanded}
-            onClick={(e) => handleExpandClick(e)}
+            onClick={(e) => handleExpand(e)}
             aria-expanded={expanded}
             aria-label='show more'
           >

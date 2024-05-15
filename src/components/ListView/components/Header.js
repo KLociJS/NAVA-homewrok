@@ -9,28 +9,18 @@ function ListViewCardHeader({ title, createdAt, updatedAt }) {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("desktop"));
 
-  const cardHeaderStyle = {
-    px: 2,
-    py: 0,
-    fontSize: {
-      mobile: 16,
-      tablet: 16,
-      desktop: 20,
-    },
-  };
-
-  const cardSubheaderContainer = {
-    display: "flex",
-    gap: 2,
-  };
-
   return (
     <CardHeader
       title={
         <Typography variant={isSmallScreen ? "h6" : "h5"}>{title}</Typography>
       }
       subheader={
-        <Box sx={cardSubheaderContainer}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+          }}
+        >
           <TextWithIcon>
             <CiCalendar />
             <Typography variant='body2'>{createdAt}</Typography>
@@ -41,7 +31,15 @@ function ListViewCardHeader({ title, createdAt, updatedAt }) {
           </TextWithIcon>
         </Box>
       }
-      sx={cardHeaderStyle}
+      sx={{
+        px: 2,
+        py: 0,
+        fontSize: {
+          mobile: 16,
+          tablet: 16,
+          desktop: 20,
+        },
+      }}
     />
   );
 }
