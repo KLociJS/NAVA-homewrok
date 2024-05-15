@@ -1,4 +1,16 @@
-import { Box, Button, Grow, IconButton, Tab, Tabs } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grow,
+  IconButton,
+  Tab,
+  Tabs,
+} from "@mui/material";
 import React, { useState } from "react";
 import { MdClose, MdDelete, MdNavigateBefore } from "react-icons/md";
 import { useImageDataContext } from "../../context/ImageDataContext";
@@ -15,6 +27,12 @@ function a11yProps(index) {
 function DetailedView({ isFullScreen, handleClose, imgUrl }) {
   const [value, setValue] = useState(0);
   const data = useImageDataContext();
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleDialogToggle = () => {
+    setIsDialogOpen((prev) => !prev);
+  };
 
   const handleChangeTab = (event, newValue) => {
     setValue(newValue);
@@ -34,6 +52,7 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
       }, 1000);
     }).then((res) => {
       console.log(res);
+      handleDialogToggle();
       handleClose();
     });
   };
@@ -125,7 +144,7 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
                 variant='contained'
                 color='error'
                 startIcon={<MdDelete />}
-                onClick={handleDelete}
+                onClick={handleDialogToggle}
               >
                 Delete
               </Button>
@@ -138,6 +157,31 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
                 Back
               </Button>
             </Box>
+            <Dialog
+              open={isDialogOpen}
+              onClose={handleDialogToggle}
+              aria-labelledby='delete image dialog'
+              aria-describedby='deleting image confirmation dialog'
+            >
+              <DialogTitle id='alert-dialog-title'>Delete Image</DialogTitle>
+              <DialogContent>
+                <DialogContentText id='alert-dialog-description'>
+                  Are you sure you want to delete this image?
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleDialogToggle} variant='outlined'>
+                  Cancel
+                </Button>
+                <Button
+                  onClick={handleDelete}
+                  variant='contained'
+                  color='error'
+                >
+                  Delete
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Box>
         </Box>
       </Box>
