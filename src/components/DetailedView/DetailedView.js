@@ -13,7 +13,11 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import { MdClose, MdDelete, MdNavigateBefore } from "react-icons/md";
+import { IS_API_RESPONSE_SUCCESSFUL } from "../../constants/constants";
 import { useImageDataContext } from "../../context/ImageDataContext";
+import { useUserActionAlertContext } from "../../context/UserActionAlertContext";
+import useAlertHook from "../../hooks/useAlertHook";
+import UserActionAlert from "../UserActionAlert";
 import MetaDataTabPanel from "./components/MetaDataTabPanel";
 import PublicDataTabPanel from "./components/PublicDataTabPanel";
 
@@ -30,6 +34,12 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  const { handleToggleAlertVisibility: handleSuccessAlertToggle } =
+    useUserActionAlertContext();
+
+  const { isAlertVisible, handleToggleAlertVisibility, severity, message } =
+    useAlertHook();
+
   const handleDialogToggle = () => {
     setIsDialogOpen((prev) => !prev);
   };
@@ -43,18 +53,34 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
     handleClose();
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleDelete = () => {
     console.log(`sending delete request to url: api/image/${data.id}`);
+    setIsLoading(true);
 
-    new Promise((resolve) => {
+    new Promise((resolve, reject) => {
       setTimeout(() => {
-        resolve("Data deleted on server");
+        if (IS_API_RESPONSE_SUCCESSFUL) {
+          resolve("Data deleted on server");
+        } else {
+          reject("Error deleting image");
+        }
       }, 1000);
-    }).then((res) => {
-      console.log(res);
-      handleDialogToggle();
-      handleClose();
-    });
+    })
+      .then((res) => {
+        console.log(res);
+        handleClose();
+        handleSuccessAlertToggle("Image was successfully deleted.");
+      })
+      .catch((error) => {
+        console.error("Error deleting image: ", error);
+        handleToggleAlertVisibility("Couldn't delete image.", "error");
+      })
+      .finally(() => {
+        handleDialogToggle();
+        setIsLoading(false);
+      });
   };
 
   const detailedViewOverlyStyle = {
@@ -136,7 +162,12 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
               </Tabs>
             </Box>
             <MetaDataTabPanel data={data} currentVisibleIndex={value} />
-            <PublicDataTabPanel currentVisibleIndex={value} />
+
+            <PublicDataTabPanel
+              currentVisibleIndex={value}
+              handleToggleAlertVisibility={handleToggleAlertVisibility}
+            />
+
             <Box
               sx={{ display: "flex", justifyContent: "space-between", px: 3 }}
             >
@@ -170,19 +201,29 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleDialogToggle} variant='outlined'>
+                <Button
+                  onClick={handleDialogToggle}
+                  variant='outlined'
+                  disabled={isLoading}
+                >
                   Cancel
                 </Button>
                 <Button
                   onClick={handleDelete}
                   variant='contained'
                   color='error'
+                  disabled={isLoading}
                 >
                   Delete
                 </Button>
               </DialogActions>
             </Dialog>
           </Box>
+          <UserActionAlert
+            isVisible={isAlertVisible}
+            severity={severity}
+            message={message}
+          />
         </Box>
       </Box>
     </Grow>

@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import React, { useState } from "react";
+import { IS_API_RESPONSE_SUCCESSFUL } from "../../../constants/constants";
 import { PublicImageDataContextProvider } from "../../../context/PublicImageDataContext";
 import AkrLabels from "./AkrLabels";
 import CustomTabPanel from "./CustomTabPanel";
@@ -25,21 +26,31 @@ const mockAPICall = (data, url) => {
   console.log("Sending data to " + url);
   console.log("Data: ", data);
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve("Data saved on server");
+      if (IS_API_RESPONSE_SUCCESSFUL) {
+        resolve("Updated successfully.");
+      } else {
+        reject("Error saving data.");
+      }
     }, 1000);
   });
 };
 
-function PublicDataTabPanel({ currentVisibleIndex }) {
+function PublicDataTabPanel({
+  currentVisibleIndex,
+  handleToggleAlertVisibility,
+}) {
   const [publicData, setPublicData] = useState(mockData);
 
   return (
     <CustomTabPanel currentVisibleIndex={currentVisibleIndex} index={1}>
       <PublicImageDataContextProvider value={{ publicData, setPublicData }}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          <SlugInPlaceEdit apiCallHandler={mockAPICall} />
+          <SlugInPlaceEdit
+            apiCallHandler={mockAPICall}
+            handleToggleAlertVisibility={handleToggleAlertVisibility}
+          />
           <InPlaceEdit
             value={mockData.country}
             name='country'
@@ -47,6 +58,7 @@ function PublicDataTabPanel({ currentVisibleIndex }) {
             inputType='text'
             iconSize={16}
             heading={"Country"}
+            handleToggleAlertVisibility={handleToggleAlertVisibility}
           />
 
           <InPlaceEdit
@@ -56,6 +68,7 @@ function PublicDataTabPanel({ currentVisibleIndex }) {
             inputType='text'
             iconSize={16}
             heading={"City"}
+            handleToggleAlertVisibility={handleToggleAlertVisibility}
           />
 
           <InPlaceEdit
@@ -65,6 +78,7 @@ function PublicDataTabPanel({ currentVisibleIndex }) {
             inputType='textarea'
             iconSize={16}
             heading={"Description"}
+            handleToggleAlertVisibility={handleToggleAlertVisibility}
           />
 
           <InPlaceEdit
@@ -74,9 +88,13 @@ function PublicDataTabPanel({ currentVisibleIndex }) {
             inputType='textarea'
             iconSize={16}
             heading={"Background"}
+            handleToggleAlertVisibility={handleToggleAlertVisibility}
           />
 
-          <DateInPlaceEdit apiCallHandler={mockAPICall} />
+          <DateInPlaceEdit
+            apiCallHandler={mockAPICall}
+            handleToggleAlertVisibility={handleToggleAlertVisibility}
+          />
           <AkrLabels />
         </Box>
       </PublicImageDataContextProvider>

@@ -1,10 +1,38 @@
 import { TextareaAutosize as BaseTextareaAutosize } from "@mui/base/TextareaAutosize";
+import { Typography } from "@mui/material";
 import { styled } from "@mui/system";
 
-export default function TextArea({ value, onChange, label }) {
-  return <TextareaAutosize value={value} onChange={onChange} label={label} />;
+export default function TextArea({
+  value,
+  onChange,
+  label,
+  error,
+  helperText,
+}) {
+  return (
+    <>
+      <TextareaAutosize
+        value={value}
+        onChange={onChange}
+        label={label}
+        sx={{
+          maxWidth: 320,
+          py: 0.5,
+          px: 2,
+          borderRadius: 1,
+          fontSize: 16,
+          fontWeight: 400,
+          borderColor: error ? "error.main" : "grey.300",
+        }}
+      />
+      <Typography variant='body2' color='error'>
+        {error && helperText}
+      </Typography>
+    </>
+  );
 }
 
+// I can't fix this now, but I will try to fix it later
 const blue = {
   100: "#DAECFF",
   200: "#b6daff",

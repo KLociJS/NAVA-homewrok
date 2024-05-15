@@ -16,6 +16,7 @@ function InPlaceEdit({
   apiCallHandler,
   name,
   inputType,
+  handleToggleAlertVisibility,
   iconSize = 20,
 }) {
   if (inputType !== "text" && inputType !== "textarea") {
@@ -26,9 +27,12 @@ function InPlaceEdit({
 
   const [data, setData] = useState(publicData[name]);
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const handleEditVisibilityChange = () => {
     setIsEditing((prev) => !prev);
+    setHasError(false);
   };
 
   const handleInputChange = (e) => {
@@ -36,14 +40,20 @@ function InPlaceEdit({
   };
 
   const handleSave = () => {
+    setIsLoading(true);
     apiCallHandler({ [name]: data }, `api/public/${name}`)
       .then((res) => {
         console.log(res);
         setPublicData((prev) => ({ ...prev, [name]: data }));
         handleEditVisibilityChange();
+        handleToggleAlertVisibility(`${name} was updated successfully.`);
       })
       .catch((error) => {
         console.log(error);
+        setHasError(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -103,6 +113,8 @@ function InPlaceEdit({
               onChange={handleInputChange}
               variant='outlined'
               sx={{ width: 1 }}
+              error={hasError}
+              helperText={hasError ? `Error saving ${name}` : ""}
             />
           </>
         ) : (
@@ -110,16 +122,26 @@ function InPlaceEdit({
             <Typography variant='overline' gutterBottom sx={headingStyle}>
               {heading}
             </Typography>
-            <TextArea value={data} onChange={handleInputChange} label={name} />
+            <TextArea
+              value={data}
+              onChange={handleInputChange}
+              label={name}
+              error={hasError}
+              helperText={`Error saving ${name}`}
+            />
           </>
         )}
         <Box
           sx={{ display: "flex", gap: 1, justifyContent: "flex-end", mt: 1 }}
         >
-          <Button variant='outlined' onClick={handleEditVisibilityChange}>
+          <Button
+            variant='outlined'
+            onClick={handleEditVisibilityChange}
+            disabled={isLoading}
+          >
             Cancel
           </Button>
-          <Button variant='contained' onClick={handleSave}>
+          <Button variant='contained' onClick={handleSave} disabled={isLoading}>
             Save
           </Button>
         </Box>

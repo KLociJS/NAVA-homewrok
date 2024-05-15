@@ -3,14 +3,17 @@ import React, { useState } from "react";
 import { MdEdit } from "react-icons/md";
 import { usePublicImageDataContext } from "../../../../context/PublicImageDataContext";
 
-function SlugInPlaceEdit({ apiCallHandler }) {
+function SlugInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
   const { publicData, setPublicData } = usePublicImageDataContext();
 
   const [data, setData] = useState(publicData.slug);
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
-  const handleEditVisibilityChange = () => {
+  const handleEditVisibilityToggle = () => {
     setIsEditing((prev) => !prev);
+    setHasError(false);
   };
 
   const handleInputChange = (e) => {
@@ -18,14 +21,20 @@ function SlugInPlaceEdit({ apiCallHandler }) {
   };
 
   const handleSave = () => {
+    setIsLoading(true);
     apiCallHandler({ slug: data }, `api/public/slug`)
       .then((res) => {
         console.log(res);
         setPublicData((prev) => ({ ...prev, slug: data }));
-        handleEditVisibilityChange();
+        handleEditVisibilityToggle();
+        handleToggleAlertVisibility("Slug was updated successfully.");
       })
       .catch((error) => {
+        setHasError(true);
         console.log(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -52,7 +61,7 @@ function SlugInPlaceEdit({ apiCallHandler }) {
           <Typography variant='h6' sx={headingStyle}>
             {publicData.slug}
           </Typography>
-          <IconButton onClick={handleEditVisibilityChange}>
+          <IconButton onClick={handleEditVisibilityToggle}>
             <MdEdit size={20} />
           </IconButton>
         </Box>
@@ -70,13 +79,19 @@ function SlugInPlaceEdit({ apiCallHandler }) {
           variant='outlined'
           label='Slug'
           sx={{ width: 1, mt: 1 }}
+          error={hasError}
+          helperText={hasError ? "Error saving slug" : ""}
         />
 
         <Box sx={{ display: "flex", gap: 1, justifyContent: "flex-end" }}>
-          <Button variant='outlined' onClick={handleEditVisibilityChange}>
+          <Button
+            variant='outlined'
+            onClick={handleEditVisibilityToggle}
+            disabled={isLoading}
+          >
             Cancel
           </Button>
-          <Button variant='contained' onClick={handleSave}>
+          <Button variant='contained' onClick={handleSave} disabled={isLoading}>
             Save
           </Button>
         </Box>

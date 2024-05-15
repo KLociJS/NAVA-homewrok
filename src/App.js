@@ -12,8 +12,11 @@ import DesktopSkeleton from "./components/ListView/components/skeleton/DesktopSk
 import MobileSkeleton from "./components/ListView/components/skeleton/MobileSkeleton";
 import TabletSkeleton from "./components/ListView/components/skeleton/TabletSkeleton";
 import SearchInput from "./components/SearchInput/SearchInput";
+import UserActionAlert from "./components/UserActionAlert";
 import { ImageDataContextProvider } from "./context/ImageDataContext";
+import { UserActionAlertContextProvider } from "./context/UserActionAlertContext";
 import { getResponseData } from "./data/apiResponse";
+import useAlertHook from "./hooks/useAlertHook";
 import theme from "./style";
 
 function App() {
@@ -42,6 +45,9 @@ function App() {
     setPageCount(value);
   };
 
+  const { isAlertVisible, handleToggleAlertVisibility, severity, message } =
+    useAlertHook();
+
   const mainContainerStyle = {
     display: "flex",
     gap: { mobile: 1, tablet: 1, desktop: 0 },
@@ -49,6 +55,7 @@ function App() {
     px: 4,
     py: 2,
     maxWidth: 1200,
+    position: "relative",
   };
 
   const skeletonContainerStyle = {
@@ -69,9 +76,13 @@ function App() {
         ) : (
           <>
             {response.map((data) => (
-              <ImageDataContextProvider value={data}>
-                <PreviewImage key={data.id} />
-              </ImageDataContextProvider>
+              <UserActionAlertContextProvider
+                value={{ handleToggleAlertVisibility }}
+              >
+                <ImageDataContextProvider value={data}>
+                  <PreviewImage key={data.id} />
+                </ImageDataContextProvider>
+              </UserActionAlertContextProvider>
             ))}
             <Box sx={{ width: 1, display: "flex", justifyContent: "center" }}>
               <Pagination
@@ -80,6 +91,11 @@ function App() {
                 onChange={handlePageChange}
               />
             </Box>
+            <UserActionAlert
+              severity={severity}
+              isVisible={isAlertVisible}
+              message={message}
+            />
           </>
         )}
       </Container>

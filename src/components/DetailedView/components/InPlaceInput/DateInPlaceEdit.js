@@ -7,14 +7,17 @@ import { MdEdit } from "react-icons/md";
 import { usePublicImageDataContext } from "../../../../context/PublicImageDataContext";
 import formatDate from "../../../../util/formatDate";
 
-function DateInPlaceEdit({ apiCallHandler }) {
+function DateInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
   const { publicData, setPublicData } = usePublicImageDataContext();
 
   const [data, setData] = useState(dayjs(publicData.captureDate));
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const handleEditVisibilityChange = () => {
     setIsEditing((prev) => !prev);
+    setHasError(false);
   };
 
   const handleInputChange = (date) => {
@@ -27,8 +30,10 @@ function DateInPlaceEdit({ apiCallHandler }) {
         console.log(res);
         setPublicData((prev) => ({ ...prev, captureDate: data }));
         handleEditVisibilityChange();
+        handleToggleAlertVisibility("Capture date was updated successfully.");
       })
       .catch((error) => {
+        setHasError(true);
         console.log(error);
       });
   };
@@ -86,8 +91,18 @@ function DateInPlaceEdit({ apiCallHandler }) {
           <DatePicker
             onChange={(date) => handleInputChange(date)}
             value={data}
-            sx={{ width: 1 }}
+            sx={{
+              width: 1,
+              borderColor: hasError ? "error.main" : "text.primary",
+              "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+                border: hasError ? "1px solid red" : "1px solid gray",
+              },
+            }}
+            error={hasError}
           />
+          <Typography variant='body2' color='error'>
+            {hasError ? "Error saving date." : ""}
+          </Typography>
         </LocalizationProvider>
 
         <Box
