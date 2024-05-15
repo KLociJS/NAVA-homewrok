@@ -36,8 +36,8 @@ function MetaDataTabPanel({ data, currentVisibleIndex }) {
           data.filename_str[0],
           data.coll_str[0],
           data.format_str[0],
-          formatDate(data.harvestDate_dt),
           formatDate(data.createDate_dt),
+          formatDate(data.harvestDate_dt),
         ].map((data, index) => (
           <>
             <Divider />
