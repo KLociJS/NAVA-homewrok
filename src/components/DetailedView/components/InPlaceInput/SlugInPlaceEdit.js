@@ -74,7 +74,7 @@ function SlugInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
       >
         <TextField
           value={data}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e.target.value)}
           variant='outlined'
           label='Slug'
           sx={{ width: 1, mt: 1 }}
