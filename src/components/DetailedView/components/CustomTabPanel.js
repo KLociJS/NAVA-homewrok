@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import React from "react";
 
 function CustomTabPanel(props) {
-  const { children, currentVisibleIndex, index, ...other } = props;
+  const { children, visibleTabIndex, index, ...other } = props;
 
   const customTabContainerStyle = {
     display: "flex",
@@ -14,12 +14,12 @@ function CustomTabPanel(props) {
   return (
     <div
       role='tabpanel'
-      hidden={currentVisibleIndex !== index}
+      hidden={visibleTabIndex !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {currentVisibleIndex === index && (
+      {visibleTabIndex === index && (
         <Box sx={customTabContainerStyle}>{children}</Box>
       )}
     </div>

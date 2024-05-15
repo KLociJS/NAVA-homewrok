@@ -37,14 +37,11 @@ const mockAPICall = (data, url) => {
   });
 };
 
-function PublicDataTabPanel({
-  currentVisibleIndex,
-  handleToggleAlertVisibility,
-}) {
+function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
   const [publicData, setPublicData] = useState(mockData);
 
   return (
-    <CustomTabPanel currentVisibleIndex={currentVisibleIndex} index={1}>
+    <CustomTabPanel visibleTabIndex={visibleTabIndex} index={1}>
       <PublicImageDataContextProvider value={{ publicData, setPublicData }}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <SlugInPlaceEdit

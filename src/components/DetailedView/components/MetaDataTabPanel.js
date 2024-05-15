@@ -24,9 +24,9 @@ const metaDataTypes = [
   { icon: <PiClockClockwise size={20} />, type: "Last Modification" },
 ];
 
-function MetaDataTabPanel({ data, currentVisibleIndex }) {
+function MetaDataTabPanel({ data, visibleTabIndex }) {
   return (
-    <CustomTabPanel currentVisibleIndex={currentVisibleIndex} index={0}>
+    <CustomTabPanel visibleTabIndex={visibleTabIndex} index={0}>
       <Typography variant='h6' gutterBottom>
         {data.description_str[0]}
       </Typography>

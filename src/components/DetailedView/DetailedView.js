@@ -1,25 +1,16 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grow,
-  IconButton,
-  Tab,
-  Tabs,
-} from "@mui/material";
-import React, { useState } from "react";
+import { Box, Button, Grow, IconButton, Tab, Tabs } from "@mui/material";
+import React from "react";
 import { MdClose, MdDelete, MdNavigateBefore } from "react-icons/md";
-import { IS_API_RESPONSE_SUCCESSFUL } from "../../constants/constants";
 import { useImageDataContext } from "../../context/ImageDataContext";
 import { useUserActionAlertContext } from "../../context/UserActionAlertContext";
 import useAlertHook from "../../hooks/useAlertHook";
+import useChangeTab from "../../hooks/useChangeTab";
+import useToggleDialog from "../../hooks/useToggleDialog";
 import UserActionAlert from "../UserActionAlert";
+import DeleteDialog from "./components/DeleteDialog";
 import MetaDataTabPanel from "./components/MetaDataTabPanel";
 import PublicDataTabPanel from "./components/PublicDataTabPanel";
+import useDeleteImage from "./hooks/useDeleteImage";
 
 function a11yProps(index) {
   return {
@@ -29,58 +20,29 @@ function a11yProps(index) {
 }
 
 function DetailedView({ isFullScreen, handleClose, imgUrl }) {
-  const [value, setValue] = useState(0);
   const data = useImageDataContext();
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { isDialogOpen, handleToggleDialog } = useToggleDialog();
 
-  const { handleToggleAlertVisibility: handleSuccessAlertToggle } =
+  const { handleToggleAlertVisibility: handleToggleSuccessAlert } =
     useUserActionAlertContext();
 
   const { isAlertVisible, handleToggleAlertVisibility, severity, message } =
     useAlertHook();
 
-  const handleDialogToggle = () => {
-    setIsDialogOpen((prev) => !prev);
-  };
+  const { isLoading, handleDelete } = useDeleteImage(
+    data,
+    handleClose,
+    handleToggleSuccessAlert,
+    handleToggleAlertVisibility,
+    handleToggleDialog
+  );
 
-  const handleChangeTab = (event, newValue) => {
-    setValue(newValue);
-  };
+  const { handleChangeTab, visibleTabIndex } = useChangeTab();
 
   const handleOverlayClose = (e) => {
     e.stopPropagation();
     handleClose();
-  };
-
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleDelete = () => {
-    console.log(`sending delete request to url: api/image/${data.id}`);
-    setIsLoading(true);
-
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (IS_API_RESPONSE_SUCCESSFUL) {
-          resolve("Data deleted on server");
-        } else {
-          reject("Error deleting image");
-        }
-      }, 1000);
-    })
-      .then((res) => {
-        console.log(res);
-        handleClose();
-        handleSuccessAlertToggle("Image was successfully deleted.");
-      })
-      .catch((error) => {
-        console.error("Error deleting image: ", error);
-        handleToggleAlertVisibility("Couldn't delete image.", "error");
-      })
-      .finally(() => {
-        handleDialogToggle();
-        setIsLoading(false);
-      });
   };
 
   const detailedViewOverlyStyle = {
@@ -153,7 +115,7 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
           <Box sx={{ width: { desktop: "30%" } }}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <Tabs
-                value={value}
+                value={visibleTabIndex}
                 onChange={handleChangeTab}
                 aria-label='meta and public data tabs'
               >
@@ -161,13 +123,11 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
                 <Tab label='Public data' {...a11yProps(1)} />
               </Tabs>
             </Box>
-            <MetaDataTabPanel data={data} currentVisibleIndex={value} />
-
+            <MetaDataTabPanel data={data} visibleTabIndex={visibleTabIndex} />
             <PublicDataTabPanel
-              currentVisibleIndex={value}
+              visibleTabIndex={visibleTabIndex}
               handleToggleAlertVisibility={handleToggleAlertVisibility}
             />
-
             <Box
               sx={{ display: "flex", justifyContent: "space-between", px: 3 }}
             >
@@ -175,7 +135,7 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
                 variant='contained'
                 color='error'
                 startIcon={<MdDelete />}
-                onClick={handleDialogToggle}
+                onClick={handleToggleDialog}
               >
                 Delete
               </Button>
@@ -188,36 +148,12 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
                 Back
               </Button>
             </Box>
-            <Dialog
-              open={isDialogOpen}
-              onClose={handleDialogToggle}
-              aria-labelledby='delete image dialog'
-              aria-describedby='deleting image confirmation dialog'
-            >
-              <DialogTitle id='alert-dialog-title'>Delete Image</DialogTitle>
-              <DialogContent>
-                <DialogContentText id='alert-dialog-description'>
-                  Are you sure you want to delete this image?
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={handleDialogToggle}
-                  variant='outlined'
-                  disabled={isLoading}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={handleDelete}
-                  variant='contained'
-                  color='error'
-                  disabled={isLoading}
-                >
-                  Delete
-                </Button>
-              </DialogActions>
-            </Dialog>
+            <DeleteDialog
+              isDialogOpen={isDialogOpen}
+              handleDialogToggle={handleToggleDialog}
+              handleDelete={handleDelete}
+              isLoading={isLoading}
+            />
           </Box>
           <UserActionAlert
             isVisible={isAlertVisible}
