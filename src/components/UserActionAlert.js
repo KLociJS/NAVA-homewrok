@@ -18,8 +18,17 @@ export default function UserActionAlert({
       sx={{
         display: isVisible ? "flex" : "none",
         position: "fixed",
-        bottom: 24,
-        width: "min(100vw,1200px)",
+        bottom: {
+          desktop: 0,
+          mobile: 60,
+          tablet: 60,
+        },
+        py: 4,
+        width: {
+          desktop: 1136,
+          mobile: "calc(100% - 64px)",
+          tablet: "calc(100% - 64px)",
+        },
         justifyContent: "center",
       }}
     >

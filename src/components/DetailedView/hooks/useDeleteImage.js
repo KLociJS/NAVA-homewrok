@@ -26,11 +26,11 @@ function useDeleteImage(
       .then((res) => {
         console.log(res);
         handleClose();
-        handleToggleSuccessAlert("Image was successfully deleted.");
+        handleToggleSuccessAlert("Image was deleted successfully.");
       })
       .catch((error) => {
         console.error("Error deleting image: ", error);
-        handleToggleAlertVisibility("Couldn't delete image.", "error");
+        handleToggleAlertVisibility("Something went wrong.", "error");
       })
       .finally(() => {
         handleToggleDialog();
