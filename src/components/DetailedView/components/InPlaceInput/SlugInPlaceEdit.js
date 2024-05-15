@@ -36,11 +36,6 @@ function SlugInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
       });
   };
 
-  const headingStyle = {
-    color: "text.primary",
-    marginBlock: 0,
-  };
-
   return (
     <>
       <Box
@@ -56,7 +51,13 @@ function SlugInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
             justifyContent: "space-between",
           }}
         >
-          <Typography variant='h6' sx={headingStyle}>
+          <Typography
+            variant='h6'
+            sx={{
+              color: "text.primary",
+              marginBlock: 0,
+            }}
+          >
             {publicData.slug}
           </Typography>
           <IconButton onClick={handleToggleEditVisibility}>

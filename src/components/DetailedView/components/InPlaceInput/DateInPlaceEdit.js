@@ -40,14 +40,6 @@ function DateInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
       });
   };
 
-  const headingStyle = {
-    color: "text.secondary",
-    marginBlock: 0,
-  };
-  const contentStyle = {
-    width: "30ch",
-  };
-
   return (
     <Box>
       <Divider variant='fullWidth' />
@@ -65,7 +57,14 @@ function DateInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
             justifyContent: "space-between",
           }}
         >
-          <Typography variant='overline' gutterBottom sx={headingStyle}>
+          <Typography
+            variant='overline'
+            gutterBottom
+            sx={{
+              color: "text.secondary",
+              marginBlock: 0,
+            }}
+          >
             Capture Date
           </Typography>
           <IconButton onClick={handleToggleEditVisibility}>
@@ -74,7 +73,12 @@ function DateInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
         </Box>
 
         <Box sx={{ width: 1 }}>
-          <Typography variant='body1' sx={contentStyle}>
+          <Typography
+            variant='body1'
+            sx={{
+              width: "30ch",
+            }}
+          >
             {formatDate(publicData.captureDate)}
           </Typography>
         </Box>
@@ -86,7 +90,14 @@ function DateInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
           maxWidth: "320px",
         }}
       >
-        <Typography variant='overline' gutterBottom sx={headingStyle}>
+        <Typography
+          variant='overline'
+          gutterBottom
+          sx={{
+            color: "text.secondary",
+            marginBlock: 0,
+          }}
+        >
           Capture Date
         </Typography>
         <LocalizationProvider dateAdapter={AdapterDayjs}>

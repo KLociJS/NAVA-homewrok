@@ -22,21 +22,6 @@ const mockData = {
   akrCodes: ["sport", "tennis", "gymnastics", "match", "competition"],
 };
 
-const mockAPICall = (data, url) => {
-  console.log("Sending data to " + url);
-  console.log("Data: ", data);
-
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (IS_API_RESPONSE_SUCCESSFUL) {
-        resolve("Updated successfully.");
-      } else {
-        reject("Error saving data.");
-      }
-    }, 1000);
-  });
-};
-
 function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
   const [publicData, setPublicData] = useState(mockData);
 
@@ -98,5 +83,20 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
     </CustomTabPanel>
   );
 }
+
+const mockAPICall = (data, url) => {
+  console.log("Sending data to " + url);
+  console.log("Data: ", data);
+
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (IS_API_RESPONSE_SUCCESSFUL) {
+        resolve("Updated successfully.");
+      } else {
+        reject("Error saving data.");
+      }
+    }, 1000);
+  });
+};
 
 export default PublicDataTabPanel;

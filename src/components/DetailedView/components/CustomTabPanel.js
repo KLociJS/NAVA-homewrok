@@ -5,12 +5,6 @@ import React from "react";
 function CustomTabPanel(props) {
   const { children, visibleTabIndex, index, ...other } = props;
 
-  const customTabContainerStyle = {
-    display: "flex",
-    flexDirection: "column",
-    p: 3,
-  };
-
   return (
     <div
       role='tabpanel'
@@ -20,7 +14,15 @@ function CustomTabPanel(props) {
       {...other}
     >
       {visibleTabIndex === index && (
-        <Box sx={customTabContainerStyle}>{children}</Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            p: 3,
+          }}
+        >
+          {children}
+        </Box>
       )}
     </div>
   );

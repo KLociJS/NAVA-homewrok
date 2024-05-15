@@ -54,14 +54,6 @@ function InPlaceEdit({
       });
   };
 
-  const headingStyle = {
-    color: "text.secondary",
-    marginBlock: 0,
-  };
-  const contentStyle = {
-    width: "30ch",
-  };
-
   return (
     <Box>
       <Divider variant='fullWidth' />
@@ -79,7 +71,14 @@ function InPlaceEdit({
             justifyContent: "space-between",
           }}
         >
-          <Typography variant='overline' gutterBottom sx={headingStyle}>
+          <Typography
+            variant='overline'
+            gutterBottom
+            sx={{
+              color: "text.secondary",
+              marginBlock: 0,
+            }}
+          >
             {heading}
           </Typography>
           <IconButton onClick={handleToggleEditVisibility}>
@@ -88,7 +87,12 @@ function InPlaceEdit({
         </Box>
 
         <Box sx={{ width: 1 }}>
-          <Typography variant='body1' sx={contentStyle}>
+          <Typography
+            variant='body1'
+            sx={{
+              width: "30ch",
+            }}
+          >
             {publicData[name]}
           </Typography>
         </Box>
@@ -102,7 +106,14 @@ function InPlaceEdit({
       >
         {inputType === "text" ? (
           <>
-            <Typography variant='overline' gutterBottom sx={headingStyle}>
+            <Typography
+              variant='overline'
+              gutterBottom
+              sx={{
+                color: "text.secondary",
+                marginBlock: 0,
+              }}
+            >
               {heading}
             </Typography>
             <TextField
@@ -116,7 +127,14 @@ function InPlaceEdit({
           </>
         ) : (
           <>
-            <Typography variant='overline' gutterBottom sx={headingStyle}>
+            <Typography
+              variant='overline'
+              gutterBottom
+              sx={{
+                color: "text.secondary",
+                marginBlock: 0,
+              }}
+            >
               {heading}
             </Typography>
             <TextArea
