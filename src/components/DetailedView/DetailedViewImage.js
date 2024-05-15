@@ -4,13 +4,13 @@ import { MdClose, MdDelete, MdNavigateBefore } from "react-icons/md";
 import { useImageDataContext } from "../../context/ImageDataContext";
 import { useUserActionAlertContext } from "../../context/UserActionAlertContext";
 import useAlertHook from "../../hooks/useAlertHook";
-import useChangeTab from "../../hooks/useChangeTab";
-import useToggleDialog from "../../hooks/useToggleDialog";
 import UserActionAlert from "../UserActionAlert";
 import DeleteDialog from "./components/DeleteDialog";
 import MetaDataTabPanel from "./components/MetaDataTabPanel";
 import PublicDataTabPanel from "./components/PublicDataTabPanel";
+import useChangeTab from "./hooks/useChangeTab";
 import useDeleteImage from "./hooks/useDeleteImage";
+import useToggleDialog from "./hooks/useToggleDialog";
 
 function a11yProps(index) {
   return {
@@ -19,7 +19,7 @@ function a11yProps(index) {
   };
 }
 
-function DetailedView({ isFullScreen, handleClose, imgUrl }) {
+function DetailedViewImage({ isFullScreen, handleClose, imgUrl }) {
   const data = useImageDataContext();
 
   const { isDialogOpen, handleToggleDialog } = useToggleDialog();
@@ -166,4 +166,4 @@ function DetailedView({ isFullScreen, handleClose, imgUrl }) {
   );
 }
 
-export default DetailedView;
+export default DetailedViewImage;

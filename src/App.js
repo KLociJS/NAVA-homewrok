@@ -5,7 +5,7 @@ import {
   Pagination,
   ThemeProvider,
 } from "@mui/material";
-import PreviewImage from "./components/ListView/PreviewImage";
+import ListViewImage from "./components/ListView/ListViewImage";
 import DesktopSkeleton from "./components/ListView/components/skeleton/DesktopSkeleton";
 import MobileSkeleton from "./components/ListView/components/skeleton/MobileSkeleton";
 import TabletSkeleton from "./components/ListView/components/skeleton/TabletSkeleton";
@@ -58,7 +58,7 @@ function App() {
                 value={{ handleToggleAlertVisibility }}
               >
                 <ImageDataContextProvider value={data}>
-                  <PreviewImage key={data.id} />
+                  <ListViewImage key={data.id} />
                 </ImageDataContextProvider>
               </UserActionAlertContextProvider>
             ))}

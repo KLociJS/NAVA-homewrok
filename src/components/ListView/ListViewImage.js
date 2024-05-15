@@ -11,7 +11,7 @@ import React, { useMemo, useState } from "react";
 import { MdOutlineExpandMore } from "react-icons/md";
 import { IMG_API_URL } from "../../constants/constants";
 import { useImageDataContext } from "../../context/ImageDataContext";
-import DetailedView from "../DetailedView/DetailedView";
+import DetailedView from "../DetailedView/DetailedViewImage";
 import ExpandableMetadataList from "./components/ExpandableMetadataList";
 import Header from "./components/Header";
 import MetaDataList from "./components/MetaDataList";
@@ -29,7 +29,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function PreviewImage() {
+export default function ListViewImage() {
   const imgUrl = useMemo(() => {
     const randomWidth = Math.floor(Math.random() * 1300) + 600;
     const randomHeight = Math.floor(Math.random() * 1300) + 600;
@@ -83,13 +83,6 @@ export default function PreviewImage() {
     },
   };
 
-  const cardDataContainerStyle = {
-    display: "flex",
-    flexDirection: "column",
-    flexGrow: 1,
-    gap: 1,
-  };
-
   return (
     <Card
       elevation={0}
@@ -99,7 +92,14 @@ export default function PreviewImage() {
     >
       <Thumbnail title={data.description_str[0]} imgUrl={imgUrl} />
 
-      <Box sx={cardDataContainerStyle}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+          gap: 1,
+        }}
+      >
         <Header
           title={data.description_str[0]}
           createdAt={data.createDate_dt.slice(0, 10).replace(/-/g, "/")}
