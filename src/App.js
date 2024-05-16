@@ -71,8 +71,19 @@ function App() {
             </Box>
             <UserActionAlert
               severity={severity}
-              isVisible={isAlertVisible}
               message={message}
+              sx={{
+                display: isAlertVisible ? "flex" : "none",
+                position: "fixed",
+                bottom: {
+                  desktop: 0,
+                  mobile: 60,
+                  tablet: 60,
+                },
+                py: 4,
+                width: 1200,
+                justifyContent: "center",
+              }}
             />
           </>
         )}

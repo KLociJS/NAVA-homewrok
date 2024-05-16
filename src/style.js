@@ -9,6 +9,9 @@ const theme = createTheme({
     },
   },
   palette: {
+    common: {
+      white: "#eff1f3",
+    },
     background: {
       default: "#EFF1F3",
     },

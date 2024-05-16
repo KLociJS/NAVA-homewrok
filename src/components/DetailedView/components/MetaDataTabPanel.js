@@ -26,50 +26,52 @@ const metaDataTypes = [
 
 function MetaDataTabPanel({ data, visibleTabIndex }) {
   return (
-    <CustomTabPanel visibleTabIndex={visibleTabIndex} index={0}>
-      <Typography variant='h6' gutterBottom>
-        {data.description_str[0]}
-      </Typography>
-      <List disablePadding>
-        {[
-          data.id,
-          data.filename_str[0],
-          data.coll_str[0],
-          data.format_str[0],
-          formatDate(data.createDate_dt),
-          formatDate(data.harvestDate_dt),
-        ].map((data, index) => (
-          <>
-            <Divider />
-            <ListItem
-              key={data.id}
-              sx={{
-                p: 0,
-              }}
-            >
-              <ListItemText
-                disableTypography
-                primary={
-                  <Box sx={{ display: "flex", flexDirection: "column" }}>
-                    <TextWithIcon>
-                      <Box sx={{ color: "text.secondary" }}>
-                        {metaDataTypes[index].icon}
-                      </Box>
-                      <Typography
-                        variant='overline'
-                        sx={{ color: "text.secondary" }}
-                      >
-                        {metaDataTypes[index].type}
-                      </Typography>
-                    </TextWithIcon>
-                    <Typography variant='body2'>{data}</Typography>
-                  </Box>
-                }
-              />
-            </ListItem>
-          </>
-        ))}
-      </List>
+    <CustomTabPanel visibleTabIndex={visibleTabIndex} index={0} sx={{ w: 1 }}>
+      <Box>
+        <Typography variant='h6' gutterBottom>
+          {data.description_str[0]}
+        </Typography>
+        <List disablePadding>
+          {[
+            data.id,
+            data.filename_str[0],
+            data.coll_str[0],
+            data.format_str[0],
+            formatDate(data.createDate_dt),
+            formatDate(data.harvestDate_dt),
+          ].map((data, index) => (
+            <>
+              <Divider />
+              <ListItem
+                key={data.id}
+                sx={{
+                  p: 0,
+                }}
+              >
+                <ListItemText
+                  disableTypography
+                  primary={
+                    <Box sx={{ display: "flex", flexDirection: "column" }}>
+                      <TextWithIcon>
+                        <Box sx={{ color: "text.secondary" }}>
+                          {metaDataTypes[index].icon}
+                        </Box>
+                        <Typography
+                          variant='overline'
+                          sx={{ color: "text.secondary" }}
+                        >
+                          {metaDataTypes[index].type}
+                        </Typography>
+                      </TextWithIcon>
+                      <Typography variant='body2'>{data}</Typography>
+                    </Box>
+                  }
+                />
+              </ListItem>
+            </>
+          ))}
+        </List>
+      </Box>
     </CustomTabPanel>
   );
 }

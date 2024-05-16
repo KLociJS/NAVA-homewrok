@@ -33,107 +33,108 @@ function DetailedViewImage({ isFullScreen, handleClose, imgUrl }) {
 
   const { handleChangeTab, visibleTabIndex } = useChangeTab();
 
-  const handleOverlayClose = (e) => {
-    e.stopPropagation();
-    handleClose();
-  };
-
   return (
     <Grow in={isFullScreen}>
-      <Box sx={detailedViewOverlyStyle} onClick={(e) => handleOverlayClose(e)}>
-        <Box sx={detailedViewContentStyle} onClick={(e) => e.stopPropagation()}>
-          <IconButton
-            sx={{
-              position: "absolute",
-              left: 0,
-              top: 0,
+      <Box sx={detailedViewContentStyle} onClick={(e) => e.stopPropagation()}>
+        <IconButton
+          sx={{
+            position: "absolute",
+            left: 5,
+            top: 5,
+            color: "common.white",
+            backgroundColor: "action.active",
+            "&:hover": {
+              backgroundColor: "action.hover",
+            },
+          }}
+          onClick={handleClose}
+          size='small'
+        >
+          <MdClose size={30} />
+        </IconButton>
+        <Box sx={imageContainerStyle}>
+          <img
+            src={imgUrl}
+            alt={data.description_str[0]}
+            style={{
+              maxWidth: "100%",
+              objectFit: "contain",
+              borderRadius: 4,
             }}
-            onClick={handleClose}
-          >
-            <MdClose size={30} />
-          </IconButton>
-          <Box sx={imageContainerStyle}>
-            <img
-              src={imgUrl}
-              alt={data.description_str[0]}
-              style={{
-                maxWidth: "100%",
-                objectFit: "contain",
-                borderRadius: 4,
-              }}
-            />
-          </Box>
-          <Box sx={{ width: { desktop: "30%" } }}>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <Tabs
-                value={visibleTabIndex}
-                onChange={handleChangeTab}
-                aria-label='meta and public data tabs'
-              >
-                <Tab label='Metadata' {...a11yProps(0)} />
-                <Tab label='Public data' {...a11yProps(1)} />
-              </Tabs>
-            </Box>
-            <MetaDataTabPanel data={data} visibleTabIndex={visibleTabIndex} />
-            <PublicDataTabPanel
-              visibleTabIndex={visibleTabIndex}
-              handleToggleAlertVisibility={handleToggleAlertVisibility}
-            />
-            <Box
-              sx={{ display: "flex", justifyContent: "space-between", px: 3 }}
-            >
-              <Button
-                variant='contained'
-                color='error'
-                startIcon={<MdDelete />}
-                onClick={handleToggleDialog}
-              >
-                Delete
-              </Button>
-              <Button
-                variant='outlined'
-                color='primary'
-                startIcon={<MdNavigateBefore />}
-                onClick={handleClose}
-              >
-                Back
-              </Button>
-            </Box>
-            <DeleteDialog
-              isDialogOpen={isDialogOpen}
-              handleDialogToggle={handleToggleDialog}
-              handleDelete={handleDelete}
-              isLoading={isLoading}
-            />
-          </Box>
-          <UserActionAlert
-            isVisible={isAlertVisible}
-            severity={severity}
-            message={message}
           />
         </Box>
+        <Box sx={{ width: { desktop: 1 / 3 } }}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Tabs
+              value={visibleTabIndex}
+              onChange={handleChangeTab}
+              aria-label='meta and public data tabs'
+            >
+              <Tab label='Metadata' {...a11yProps(0)} />
+              <Tab label='Public data' {...a11yProps(1)} />
+            </Tabs>
+          </Box>
+          <MetaDataTabPanel data={data} visibleTabIndex={visibleTabIndex} />
+          <PublicDataTabPanel
+            visibleTabIndex={visibleTabIndex}
+            handleToggleAlertVisibility={handleToggleAlertVisibility}
+          />
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              px: 4,
+              py: 2,
+            }}
+          >
+            <Button
+              variant='contained'
+              color='error'
+              startIcon={<MdDelete />}
+              onClick={handleToggleDialog}
+            >
+              Delete
+            </Button>
+            <Button
+              variant='outlined'
+              color='primary'
+              startIcon={<MdNavigateBefore />}
+              onClick={handleClose}
+            >
+              Back
+            </Button>
+          </Box>
+          <DeleteDialog
+            isDialogOpen={isDialogOpen}
+            handleDialogToggle={handleToggleDialog}
+            handleDelete={handleDelete}
+            isLoading={isLoading}
+          />
+        </Box>
+        <UserActionAlert
+          severity={severity}
+          message={message}
+          sx={{
+            display: isAlertVisible ? "flex" : "none",
+            position: "fixed",
+            bottom: {
+              desktop: 0,
+              mobile: 60,
+              tablet: 60,
+            },
+            py: 4,
+            width: 1,
+            justifyContent: "center",
+          }}
+        />
       </Box>
     </Grow>
   );
 }
 
-const detailedViewOverlyStyle = {
-  position: "fixed",
-  top: 0,
-  left: 0,
-  width: 1,
-  height: 1,
-  zIndex: 99,
-  backgroundColor: "action.active",
-  display: "flex",
-  justifyContent: "center",
-};
-
 const detailedViewContentStyle = {
   position: "relative",
-  maxWidth: 1200,
   width: 1,
-  p: 4,
   display: "flex",
   gap: 2,
   flexDirection: {
@@ -147,7 +148,7 @@ const detailedViewContentStyle = {
 };
 
 const imageContainerStyle = {
-  width: { mobile: 1, tablet: 1, desktop: 2 / 3 },
+  width: { mobile: 1, tablet: 1, desktop: "2 / 3" },
   display: "flex",
   justifyContent: "center",
   backgroundColor: "common.black",

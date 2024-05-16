@@ -26,7 +26,7 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
   const [publicData, setPublicData] = useState(mockData);
 
   return (
-    <CustomTabPanel visibleTabIndex={visibleTabIndex} index={1}>
+    <CustomTabPanel visibleTabIndex={visibleTabIndex} index={1} sx={{ w: 1 }}>
       <PublicImageDataContextProvider value={{ publicData, setPublicData }}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <SlugInPlaceEdit

@@ -2,6 +2,8 @@ import {
   Box,
   Card,
   CardActions,
+  Dialog,
+  DialogContent,
   Divider,
   IconButton,
   styled,
@@ -146,12 +148,22 @@ export default function ListViewImage() {
           sx={{ display: { mobile: "none", tablet: "none", desktop: "block" } }}
         />
       </Box>
-      <DetailedView
-        isFullScreen={isFullScreen}
-        handleClose={handleFullscreenChange}
-        imgUrl={imgUrl}
-        data={data}
-      />
+      <Dialog open={isFullScreen} fullScreen>
+        <DialogContent
+          sx={{
+            overflowY: "scroll",
+            backgroundColor: "background.default",
+            p: { mobile: 0, tablet: 0, desktop: 3 },
+          }}
+        >
+          <DetailedView
+            isFullScreen={isFullScreen}
+            handleClose={handleFullscreenChange}
+            imgUrl={imgUrl}
+            data={data}
+          />
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }
