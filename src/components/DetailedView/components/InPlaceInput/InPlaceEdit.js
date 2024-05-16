@@ -8,12 +8,12 @@ import {
 } from "@mui/material";
 import { MdEdit } from "react-icons/md";
 import { usePublicImageDataContext } from "../../../../context/PublicImageDataContext";
+import { mockPatchDeleteCall } from "../../../../util/mockApiCall";
 import TextArea from "./Textarea";
 import useInPlaceInput from "./hooks/useInPlaceInput";
 
 function InPlaceEdit({
   heading,
-  apiCallHandler,
   name,
   inputType,
   handleToggleAlertVisibility,
@@ -38,15 +38,22 @@ function InPlaceEdit({
 
   const handleSave = () => {
     setIsLoading(true);
-    apiCallHandler({ [name]: data }, `api/public/${name}`)
+    mockPatchDeleteCall(
+      `api/image/${name}/${data.id}`,
+      "PATCH",
+      "",
+      `${name.slice(0, 1).toUpperCase()}${name.slice(
+        1
+      )} was saved successfully.`,
+      data
+    )
       .then((res) => {
-        console.log(res);
+        if (!res.ok) throw new Error("Error saving data.");
         setPublicData((prev) => ({ ...prev, [name]: data }));
         handleToggleEditVisibility();
-        handleToggleAlertVisibility(`${name} was updated successfully.`);
+        handleToggleAlertVisibility(res.message);
       })
       .catch((error) => {
-        console.log(error);
         setHasError(true);
       })
       .finally(() => {

@@ -2,9 +2,10 @@ import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
 import React from "react";
 import { MdEdit } from "react-icons/md";
 import { usePublicImageDataContext } from "../../../../context/PublicImageDataContext";
+import { mockPatchDeleteCall } from "../../../../util/mockApiCall";
 import useInPlaceInput from "./hooks/useInPlaceInput";
 
-function SlugInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
+function SlugInPlaceEdit({ handleToggleAlertVisibility }) {
   const { publicData, setPublicData } = usePublicImageDataContext();
 
   const {
@@ -20,16 +21,21 @@ function SlugInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
 
   const handleSave = () => {
     setIsLoading(true);
-    apiCallHandler({ slug: data }, `api/public/slug`)
+    mockPatchDeleteCall(
+      `api/image/slug/${data.id}`,
+      "PATCH",
+      "",
+      "Slug was saved successfully.",
+      data
+    )
       .then((res) => {
-        console.log(res);
+        if (!res.ok) throw new Error("Error saving data.");
         setPublicData((prev) => ({ ...prev, slug: data }));
         handleToggleEditVisibility();
-        handleToggleAlertVisibility("Slug was updated successfully.");
+        handleToggleAlertVisibility(res.message);
       })
       .catch((error) => {
         setHasError(true);
-        console.log(error);
       })
       .finally(() => {
         setIsLoading(false);

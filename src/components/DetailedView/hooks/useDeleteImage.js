@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IS_API_RESPONSE_SUCCESSFUL } from "../../../constants/constants";
+import { mockPatchDeleteCall } from "../../../util/mockApiCall";
 
 function useDeleteImage(
   data,
@@ -11,26 +11,22 @@ function useDeleteImage(
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = () => {
-    console.log(`sending delete request to url: api/image/${data.id}`);
     setIsLoading(true);
 
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (IS_API_RESPONSE_SUCCESSFUL) {
-          resolve("Data deleted on server");
-        } else {
-          reject("Error deleting image");
-        }
-      }, 1000);
-    })
+    mockPatchDeleteCall(
+      `api/image/${data.id}`,
+      "DELETE",
+      "Error deleting image.",
+      "Image was deleted successfully."
+    )
       .then((res) => {
-        console.log(res);
+        if (!res.ok) throw new Error("Error deleting image.");
         handleClose();
-        handleToggleSuccessAlert("Image was deleted successfully.");
+        handleToggleSuccessAlert(res.message);
       })
       .catch((error) => {
         console.error("Error deleting image: ", error);
-        handleToggleAlertVisibility("Something went wrong.", "error");
+        handleToggleAlertVisibility(error.message, "error");
       })
       .finally(() => {
         handleToggleDialog();

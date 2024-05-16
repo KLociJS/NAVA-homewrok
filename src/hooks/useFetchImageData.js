@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { getResponseData } from "../data/apiResponse";
+import { mockApiGetCall } from "../util/mockApiCall";
 
 function useFetchImageData(pageCount) {
   const [response, setResponse] = useState([]);
@@ -7,7 +7,7 @@ function useFetchImageData(pageCount) {
 
   const fetchData = useCallback(() => {
     setIsLoaded(true);
-    getResponseData(pageCount * 10)
+    mockApiGetCall(`/api/image/${pageCount * 10}`)
       .then((data) => {
         setIsLoaded(false);
         setResponse(data);

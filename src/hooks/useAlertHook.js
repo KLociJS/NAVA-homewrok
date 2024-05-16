@@ -6,7 +6,6 @@ function useAlertHook() {
   const [message, setMessage] = useState();
 
   const handleToggleAlertVisibility = (message, severity = "success") => {
-    console.log("message", message);
     setIsAlertVisible(true);
     setSeverity(severity);
     setMessage(message);

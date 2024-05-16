@@ -6,9 +6,10 @@ import React from "react";
 import { MdEdit } from "react-icons/md";
 import { usePublicImageDataContext } from "../../../../context/PublicImageDataContext";
 import formatDate from "../../../../util/formatDate";
+import { mockPatchDeleteCall } from "../../../../util/mockApiCall";
 import useInPlaceInput from "./hooks/useInPlaceInput";
 
-function DateInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
+function DateInPlaceEdit({ handleToggleAlertVisibility }) {
   const { publicData, setPublicData } = usePublicImageDataContext();
 
   const {
@@ -24,16 +25,21 @@ function DateInPlaceEdit({ apiCallHandler, handleToggleAlertVisibility }) {
 
   const handleSave = () => {
     setIsLoading(true);
-    apiCallHandler({ captureDate: data }, `api/public/capture-date`)
+    mockPatchDeleteCall(
+      `api/image/date/${data.id}`,
+      "PATCH",
+      "",
+      "Date was saved successfully.",
+      data
+    )
       .then((res) => {
-        console.log(res);
+        if (!res.ok) throw new Error("Error saving data.");
         setPublicData((prev) => ({ ...prev, captureDate: data }));
         handleToggleEditVisibility();
-        handleToggleAlertVisibility("Capture date was updated successfully.");
+        handleToggleAlertVisibility(res.message);
       })
       .catch((error) => {
         setHasError(true);
-        console.log(error);
       })
       .finally(() => {
         setIsLoading(false);

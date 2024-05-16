@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
 import React, { useState } from "react";
-import { IS_API_RESPONSE_SUCCESSFUL } from "../../../constants/constants";
 import { PublicImageDataContextProvider } from "../../../context/PublicImageDataContext";
 import AkrLabels from "./AkrLabels";
 import CustomTabPanel from "./CustomTabPanel";
@@ -30,13 +29,11 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
       <PublicImageDataContextProvider value={{ publicData, setPublicData }}>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
           <SlugInPlaceEdit
-            apiCallHandler={mockAPICall}
             handleToggleAlertVisibility={handleToggleAlertVisibility}
           />
           <InPlaceEdit
             value={mockData.country}
             name='country'
-            apiCallHandler={mockAPICall}
             inputType='text'
             iconSize={16}
             heading={"Country"}
@@ -46,7 +43,6 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
           <InPlaceEdit
             value={mockData.city}
             name='city'
-            apiCallHandler={mockAPICall}
             inputType='text'
             iconSize={16}
             heading={"City"}
@@ -56,7 +52,6 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
           <InPlaceEdit
             value={mockData.description}
             name='description'
-            apiCallHandler={mockAPICall}
             inputType='textarea'
             iconSize={16}
             heading={"Description"}
@@ -66,7 +61,6 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
           <InPlaceEdit
             value={mockData.city}
             name='background'
-            apiCallHandler={mockAPICall}
             inputType='textarea'
             iconSize={16}
             heading={"Background"}
@@ -74,7 +68,6 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
           />
 
           <DateInPlaceEdit
-            apiCallHandler={mockAPICall}
             handleToggleAlertVisibility={handleToggleAlertVisibility}
           />
           <AkrLabels />
@@ -83,20 +76,5 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
     </CustomTabPanel>
   );
 }
-
-const mockAPICall = (data, url) => {
-  console.log("Sending data to " + url);
-  console.log("Data: ", data);
-
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (IS_API_RESPONSE_SUCCESSFUL) {
-        resolve("Updated successfully.");
-      } else {
-        reject("Error saving data.");
-      }
-    }, 1000);
-  });
-};
 
 export default PublicDataTabPanel;
