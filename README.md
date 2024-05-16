@@ -22,4 +22,10 @@ To set up and run this project locally, follow these steps:
 - Material-UI
 - React Icons
 
+## Preview
+![](https://i.imgur.com/DdcWdyu.png)
+![](https://i.imgur.com/wB4k4Lm.png)
+![](https://i.imgur.com/BBfbhRr.png)
+![](https://i.imgur.com/U16G6Nx.png)
+
 
