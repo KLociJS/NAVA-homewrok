@@ -43,7 +43,7 @@ function MetaDataTabPanel({ data, visibleTabIndex }) {
             <>
               <Divider />
               <ListItem
-                key={data.id}
+                key={data}
                 sx={{
                   p: 0,
                 }}
