@@ -83,8 +83,12 @@ function App() {
                   mobile: 60,
                   tablet: 60,
                 },
-                py: 4,
-                width: 1200,
+                py: {
+                  desktop: 4,
+                  mobile: 1,
+                  tablet: 1,
+                },
+                width: "calc(100% - 64px)",
                 justifyContent: "center",
                 zIndex: theme.zIndex.snackbar,
               }}
