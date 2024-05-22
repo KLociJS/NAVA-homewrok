@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { PublicImageDataContextProvider } from "../../../context/PublicImageDataContext";
 import AkrLabels from "./AkrLabels";
 import CustomTabPanel from "./CustomTabPanel";
-import DateInPlaceEdit from "./InPlaceInput/DateInPlaceEdit";
 import InPlaceEdit from "./InPlaceInput/InPlaceEdit";
 import SlugInPlaceEdit from "./InPlaceInput/SlugInPlaceEdit";
 
@@ -36,7 +35,7 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
             name='country'
             inputType='text'
             iconSize={16}
-            heading={"Country"}
+            heading='Country'
             handleToggleAlertVisibility={handleToggleAlertVisibility}
           />
 
@@ -45,7 +44,7 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
             name='city'
             inputType='text'
             iconSize={16}
-            heading={"City"}
+            heading='City'
             handleToggleAlertVisibility={handleToggleAlertVisibility}
           />
 
@@ -54,7 +53,7 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
             name='description'
             inputType='textarea'
             iconSize={16}
-            heading={"Description"}
+            heading='Description'
             handleToggleAlertVisibility={handleToggleAlertVisibility}
           />
 
@@ -63,13 +62,19 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
             name='background'
             inputType='textarea'
             iconSize={16}
-            heading={"Background"}
+            heading='Background'
             handleToggleAlertVisibility={handleToggleAlertVisibility}
           />
 
-          <DateInPlaceEdit
+          <InPlaceEdit
+            value={mockData.captureDate}
+            name='captureDate'
+            inputType='date'
+            iconSize={16}
+            heading='Capture Date'
             handleToggleAlertVisibility={handleToggleAlertVisibility}
           />
+
           <AkrLabels />
         </Box>
       </PublicImageDataContextProvider>

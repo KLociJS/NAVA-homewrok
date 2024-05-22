@@ -6,8 +6,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
 import { MdEdit } from "react-icons/md";
 import { usePublicImageDataContext } from "../../../../context/PublicImageDataContext";
+import formatDate from "../../../../util/formatDate";
 import { mockPatchDeleteCall } from "../../../../util/mockApiCall";
 import TextArea from "./Textarea";
 import useInPlaceInput from "./hooks/useInPlaceInput";
@@ -19,7 +23,11 @@ function InPlaceEdit({
   handleToggleAlertVisibility,
   iconSize = 20,
 }) {
-  if (inputType !== "text" && inputType !== "textarea") {
+  if (
+    inputType !== "text" &&
+    inputType !== "textarea" &&
+    inputType !== "date"
+  ) {
     throw new Error("Invalid input type");
   }
 
@@ -34,7 +42,59 @@ function InPlaceEdit({
     setHasError,
     handleToggleEditVisibility,
     handleInputChange,
-  } = useInPlaceInput(publicData[name]);
+  } = useInPlaceInput(
+    inputType === "date" ? dayjs(publicData[name]) : publicData[name]
+  );
+
+  const inputComponents = {
+    text: {
+      component: (
+        <TextField
+          value={data}
+          onChange={(e) => handleInputChange(e.target.value)}
+          variant='outlined'
+          sx={{ width: 1 }}
+          error={hasError}
+          helperText={hasError ? `Error saving ${name}` : ""}
+        />
+      ),
+      value: publicData[name],
+    },
+    textarea: {
+      component: (
+        <TextArea
+          value={data}
+          onChange={(e) => handleInputChange(e.target.value)}
+          label={name}
+          error={hasError}
+          helperText={`Error saving ${name}`}
+        />
+      ),
+      value: publicData[name],
+    },
+    date: {
+      component: (
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            onChange={(date) => handleInputChange(date)}
+            value={data}
+            sx={{
+              width: 1,
+              borderColor: hasError ? "error.main" : "text.primary",
+              "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+                border: hasError ? "1px solid red" : "1px solid gray",
+              },
+            }}
+            error={hasError}
+          />
+          <Typography variant='body2' color='error'>
+            {hasError ? "Error saving date." : ""}
+          </Typography>
+        </LocalizationProvider>
+      ),
+      value: formatDate(publicData[name]),
+    },
+  };
 
   const handleSave = () => {
     setIsLoading(true);
@@ -100,7 +160,7 @@ function InPlaceEdit({
               width: "30ch",
             }}
           >
-            {publicData[name]}
+            {inputComponents[inputType].value}
           </Typography>
         </Box>
       </Box>
@@ -111,48 +171,19 @@ function InPlaceEdit({
           maxWidth: "320px",
         }}
       >
-        {inputType === "text" ? (
-          <>
-            <Typography
-              variant='overline'
-              gutterBottom
-              sx={{
-                color: "text.secondary",
-                marginBlock: 0,
-              }}
-            >
-              {heading}
-            </Typography>
-            <TextField
-              value={data}
-              onChange={(e) => handleInputChange(e.target.value)}
-              variant='outlined'
-              sx={{ width: 1 }}
-              error={hasError}
-              helperText={hasError ? `Error saving ${name}` : ""}
-            />
-          </>
-        ) : (
-          <>
-            <Typography
-              variant='overline'
-              gutterBottom
-              sx={{
-                color: "text.secondary",
-                marginBlock: 0,
-              }}
-            >
-              {heading}
-            </Typography>
-            <TextArea
-              value={data}
-              onChange={(e) => handleInputChange(e.target.value)}
-              label={name}
-              error={hasError}
-              helperText={`Error saving ${name}`}
-            />
-          </>
-        )}
+        <>
+          <Typography
+            variant='overline'
+            gutterBottom
+            sx={{
+              color: "text.secondary",
+              marginBlock: 0,
+            }}
+          >
+            {heading}
+          </Typography>
+          {inputComponents[inputType].component}
+        </>
         <Box
           sx={{ display: "flex", gap: 1, justifyContent: "flex-end", mt: 1 }}
         >
