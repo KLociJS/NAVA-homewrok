@@ -51,8 +51,35 @@ function DesktopSkeleton() {
                 <Skeleton variant='rounded' width={180} height={16} />
                 <Skeleton variant='rounded' width={150} height={16} />
               </Box>
-              <Box>
-                <Skeleton variant='rounded' width={120} height={16} />
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 1,
+                }}
+              >
+                <Skeleton variant='rounded' width={180} height={16} />
+                <Skeleton variant='rounded' width={150} height={16} />
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 1,
+                }}
+              >
+                <Skeleton variant='rounded' width={180} height={16} />
+                <Skeleton variant='rounded' width={150} height={16} />
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 1,
+                }}
+              >
+                <Skeleton variant='rounded' width={180} height={16} />
+                <Skeleton variant='rounded' width={150} height={16} />
               </Box>
             </Box>
           </Box>
