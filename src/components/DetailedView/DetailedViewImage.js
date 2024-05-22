@@ -59,7 +59,6 @@ function DetailedViewImage({ isFullScreen, handleClose, imgUrl }) {
             style={{
               maxWidth: "100%",
               objectFit: "contain",
-              borderRadius: 4,
             }}
           />
         </Box>
@@ -152,7 +151,7 @@ const imageContainerStyle = {
   display: "flex",
   justifyContent: "center",
   backgroundColor: "common.black",
-  borderRadius: 1,
+  borderRadius: { desktop: 1 },
   maxHeight: {
     mobile: 500,
     tablet: 500,
