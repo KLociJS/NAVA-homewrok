@@ -103,22 +103,6 @@ function DetailedViewImage({ isFullScreen, handleClose, imgUrl }) {
             isLoading={isLoading}
           />
         </Box>
-        {/* <UserActionAlert
-          severity={severity}
-          message={message}
-          sx={{
-            display: isAlertVisible ? "flex" : "none",
-            position: "fixed",
-            bottom: {
-              desktop: 0,
-              mobile: 60,
-              tablet: 60,
-            },
-            py: 4,
-            width: 1,
-            justifyContent: "center",
-          }}
-        /> */}
       </Box>
     </Grow>
   );
