@@ -72,30 +72,30 @@ function App() {
                 onChange={handlePageChange}
               />
             </Box>
-            <UserActionAlert
-              severity={severity}
-              message={message}
-              sx={{
-                display: isAlertVisible ? "flex" : "none",
-                position: "fixed",
-                bottom: {
-                  desktop: 0,
-                  mobile: 60,
-                  tablet: 60,
-                },
-                py: {
-                  desktop: 4,
-                  mobile: 1,
-                  tablet: 1,
-                },
-                width: "calc(100% - 64px)",
-                justifyContent: "center",
-                zIndex: theme.zIndex.snackbar,
-              }}
-            />
           </>
         )}
       </Container>
+      <UserActionAlert
+        severity={severity}
+        message={message}
+        sx={{
+          display: isAlertVisible ? "flex" : "none",
+          position: "fixed",
+          bottom: {
+            desktop: 0,
+            mobile: 60,
+            tablet: 60,
+          },
+          py: {
+            desktop: 4,
+            mobile: 1,
+            tablet: 1,
+          },
+          width: 1,
+          justifyContent: "center",
+          zIndex: theme.zIndex.snackbar,
+        }}
+      />
     </ThemeProvider>
   );
 }
