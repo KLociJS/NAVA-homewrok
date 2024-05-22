@@ -4,7 +4,6 @@ import { mockPatchDeleteCall } from "../../../util/mockApiCall";
 function useDeleteImage(
   data,
   handleClose,
-  handleToggleSuccessAlert,
   handleToggleAlertVisibility,
   handleToggleDialog
 ) {
@@ -22,7 +21,7 @@ function useDeleteImage(
       .then((res) => {
         if (!res.ok) throw new Error("Error deleting image.");
         handleClose();
-        handleToggleSuccessAlert(res.message);
+        handleToggleAlertVisibility(res.message);
       })
       .catch((error) => {
         console.error("Error deleting image: ", error);

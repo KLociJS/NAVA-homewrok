@@ -9,6 +9,7 @@ export default function UserActionAlert({ message, sx, severity = "success" }) {
   ) {
     throw new Error("Invalid severity type");
   }
+
   return (
     <Box sx={sx}>
       <Alert variant='filled' severity={severity}>

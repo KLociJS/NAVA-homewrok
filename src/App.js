@@ -5,6 +5,7 @@ import {
   Pagination,
   ThemeProvider,
 } from "@mui/material";
+import React from "react";
 import ListViewImage from "./components/ListView/ListViewImage";
 import DesktopSkeleton from "./components/ListView/components/skeleton/DesktopSkeleton";
 import MobileSkeleton from "./components/ListView/components/skeleton/MobileSkeleton";
@@ -24,6 +25,12 @@ function App() {
 
   const { isAlertVisible, handleToggleAlertVisibility, severity, message } =
     useAlertHook();
+
+  const ids = response.map((data) => data.id);
+  //check if there are matching ids
+  if (ids.length !== new Set(ids).size) {
+    console.log("There are duplicate ids in the response data.");
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -53,15 +60,15 @@ function App() {
           </Box>
         ) : (
           <>
-            {response.map((data) => (
-              <UserActionAlertContextProvider
-                value={{ handleToggleAlertVisibility }}
-              >
+            <UserActionAlertContextProvider
+              value={{ handleToggleAlertVisibility }}
+            >
+              {response.map((data) => (
                 <ImageDataContextProvider value={data}>
-                  <ListViewImage key={data.id} />
+                  <ListViewImage />
                 </ImageDataContextProvider>
-              </UserActionAlertContextProvider>
-            ))}
+              ))}
+            </UserActionAlertContextProvider>
             <Box sx={{ width: 1, display: "flex", justifyContent: "center" }}>
               <Pagination
                 count={10}
@@ -83,6 +90,7 @@ function App() {
                 py: 4,
                 width: 1200,
                 justifyContent: "center",
+                zIndex: theme.zIndex.snackbar,
               }}
             />
           </>

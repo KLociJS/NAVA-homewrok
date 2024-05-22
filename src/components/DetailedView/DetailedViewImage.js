@@ -3,9 +3,7 @@ import React from "react";
 import { MdClose, MdDelete, MdNavigateBefore } from "react-icons/md";
 import { useImageDataContext } from "../../context/ImageDataContext";
 import { useUserActionAlertContext } from "../../context/UserActionAlertContext";
-import useAlertHook from "../../hooks/useAlertHook";
 import useToggle from "../../hooks/useToggle";
-import UserActionAlert from "../UserActionAlert";
 import DeleteDialog from "./components/DeleteDialog";
 import MetaDataTabPanel from "./components/MetaDataTabPanel";
 import PublicDataTabPanel from "./components/PublicDataTabPanel";
@@ -17,16 +15,11 @@ function DetailedViewImage({ isFullScreen, handleClose, imgUrl }) {
 
   const { value: isDialogOpen, toggle: handleToggleDialog } = useToggle();
 
-  const { handleToggleAlertVisibility: handleToggleSuccessAlert } =
-    useUserActionAlertContext();
-
-  const { isAlertVisible, handleToggleAlertVisibility, severity, message } =
-    useAlertHook();
+  const { handleToggleAlertVisibility } = useUserActionAlertContext();
 
   const { isLoading, handleDelete } = useDeleteImage(
     data,
     handleClose,
-    handleToggleSuccessAlert,
     handleToggleAlertVisibility,
     handleToggleDialog
   );
@@ -110,7 +103,7 @@ function DetailedViewImage({ isFullScreen, handleClose, imgUrl }) {
             isLoading={isLoading}
           />
         </Box>
-        <UserActionAlert
+        {/* <UserActionAlert
           severity={severity}
           message={message}
           sx={{
@@ -125,7 +118,7 @@ function DetailedViewImage({ isFullScreen, handleClose, imgUrl }) {
             width: 1,
             justifyContent: "center",
           }}
-        />
+        /> */}
       </Box>
     </Grow>
   );
