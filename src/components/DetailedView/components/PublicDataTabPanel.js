@@ -31,7 +31,6 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
             handleToggleAlertVisibility={handleToggleAlertVisibility}
           />
           <InPlaceEdit
-            value={mockData.country}
             name='country'
             inputType='text'
             iconSize={16}
@@ -40,7 +39,6 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
           />
 
           <InPlaceEdit
-            value={mockData.city}
             name='city'
             inputType='text'
             iconSize={16}
@@ -49,7 +47,6 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
           />
 
           <InPlaceEdit
-            value={mockData.description}
             name='description'
             inputType='textarea'
             iconSize={16}
@@ -58,7 +55,6 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
           />
 
           <InPlaceEdit
-            value={mockData.city}
             name='background'
             inputType='textarea'
             iconSize={16}
@@ -67,7 +63,6 @@ function PublicDataTabPanel({ visibleTabIndex, handleToggleAlertVisibility }) {
           />
 
           <InPlaceEdit
-            value={mockData.captureDate}
             name='captureDate'
             inputType='date'
             iconSize={16}
