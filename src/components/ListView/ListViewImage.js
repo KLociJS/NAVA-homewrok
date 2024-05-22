@@ -108,7 +108,7 @@ export default function ListViewImage() {
             data.format_str[0],
             `${data.ow_i} x ${data.oh_i}`,
           ].map((data, index) => (
-            <MetaDataListItem key={data.id} index={index} data={data} />
+            <MetaDataListItem key={data} index={index} data={data} />
           ))}
         </MetaDataList>
 
@@ -119,7 +119,7 @@ export default function ListViewImage() {
             data.format_str[0],
             `${data.ow_i} x ${data.oh_i}`,
           ].map((data, index) => (
-            <MetaDataListItem key={data.id} index={index} data={data} />
+            <MetaDataListItem key={data} index={index} data={data} />
           ))}
         </ExpandableMetadataList>
 

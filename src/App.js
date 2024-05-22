@@ -26,12 +26,6 @@ function App() {
   const { isAlertVisible, handleToggleAlertVisibility, severity, message } =
     useAlertHook();
 
-  const ids = response.map((data) => data.id);
-  //check if there are matching ids
-  if (ids.length !== new Set(ids).size) {
-    console.log("There are duplicate ids in the response data.");
-  }
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -64,9 +58,11 @@ function App() {
               value={{ handleToggleAlertVisibility }}
             >
               {response.map((data) => (
-                <ImageDataContextProvider value={data}>
-                  <ListViewImage />
-                </ImageDataContextProvider>
+                <React.Fragment key={data.id}>
+                  <ImageDataContextProvider value={data}>
+                    <ListViewImage />
+                  </ImageDataContextProvider>
+                </React.Fragment>
               ))}
             </UserActionAlertContextProvider>
             <Box sx={{ width: 1, display: "flex", justifyContent: "center" }}>
