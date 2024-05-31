@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { SNACKBAR_AUTO_HIDE_DURATION } from "../constants/constants";
 
 function useAlertHook() {
   const [isAlertVisible, setIsAlertVisible] = useState(false);
@@ -12,7 +11,7 @@ function useAlertHook() {
     setMessage(message);
     setTimeout(() => {
       setIsAlertVisible(false);
-    }, SNACKBAR_AUTO_HIDE_DURATION);
+    }, process.env.REACT_APP_SNACKBAR_AUTO_HIDE_DURATION);
   };
   return { isAlertVisible, handleToggleAlertVisibility, severity, message };
 }

@@ -11,7 +11,6 @@ import {
 
 import React, { useMemo } from "react";
 import { MdOutlineExpandMore } from "react-icons/md";
-import { IMG_API_URL } from "../../constants/constants";
 import { useImageDataContext } from "../../context/ImageDataContext";
 import DetailedView from "../DetailedView/DetailedViewImage";
 import ExpandableMetadataList from "./components/ExpandableMetadataList";
@@ -37,7 +36,7 @@ export default function ListViewImage() {
   const imgUrl = useMemo(() => {
     const randomWidth = Math.floor(Math.random() * (1500 - 1200 + 1)) + 1200;
     const randomHeight = Math.floor(Math.random() * (1500 - 1200 + 1)) + 1200;
-    return `${IMG_API_URL}${randomWidth}/${randomHeight}`;
+    return `${process.env.REACT_APP_IMG_API_URL}${randomWidth}/${randomHeight}`;
   }, []);
 
   const { isFullScreen, handleFullscreenChange } = useToggleFullScreen();

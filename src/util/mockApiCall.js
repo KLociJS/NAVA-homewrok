@@ -1,8 +1,3 @@
-import {
-  API_RESPONSE_DELAY,
-  IS_API_RESPONSE_SUCCESSFUL,
-} from "../constants/constants";
-
 import data from "../data/data.json";
 
 export function mockPatchDeleteCall(
@@ -14,12 +9,12 @@ export function mockPatchDeleteCall(
 ) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (IS_API_RESPONSE_SUCCESSFUL) {
+      if (process.env.REACT_APP_IS_API_RESPONSE_SUCCESSFUL === "true") {
         resolve({ ok: true, message: successMessage });
       } else {
         resolve({ ok: false, message: errorMessage });
       }
-    }, API_RESPONSE_DELAY);
+    }, process.env.REACT_APP_API_RESPONSE_DELAY);
   });
 }
 
@@ -29,6 +24,6 @@ export const mockApiGetCall = (url) => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(response.response.docs.slice(end - 10, end));
-    }, API_RESPONSE_DELAY);
+    }, process.env.REACT_APP_API_RESPONSE_DELAY);
   });
 };
