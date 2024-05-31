@@ -23,7 +23,10 @@ export const mockApiGetCall = (url) => {
   const end = +url.split("/").pop();
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(response.response.docs.slice(end - 10, end));
+      resolve({
+        data: response.response.docs.slice(end - 10, end),
+        availablePages: Math.ceil(response.response.docs.length / 10),
+      });
     }, process.env.REACT_APP_API_RESPONSE_DELAY);
   });
 };

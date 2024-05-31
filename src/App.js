@@ -21,7 +21,7 @@ import theme from "./style";
 
 function App() {
   const { pageCount, handlePageChange } = usePagination();
-  const { response, isLoaded } = useFetchImageData(pageCount);
+  const { response, isLoaded, availablePages } = useFetchImageData(pageCount);
 
   const { isAlertVisible, handleToggleAlertVisibility, severity, message } =
     useAlertHook();
@@ -67,7 +67,7 @@ function App() {
             </UserActionAlertContextProvider>
             <Box sx={{ width: 1, display: "flex", justifyContent: "center" }}>
               <Pagination
-                count={10}
+                count={availablePages}
                 page={pageCount}
                 onChange={handlePageChange}
               />

@@ -4,13 +4,15 @@ import { mockApiGetCall } from "../util/mockApiCall";
 function useFetchImageData(pageCount) {
   const [response, setResponse] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [availablePages, setAvailablePages] = useState(0);
 
   const fetchData = useCallback(() => {
     setIsLoaded(true);
     mockApiGetCall(`/api/image/${pageCount * 10}`)
-      .then((data) => {
+      .then((response) => {
         setIsLoaded(false);
-        setResponse(data);
+        setResponse(response.data);
+        setAvailablePages(response.availablePages);
       })
       .catch((error) => {
         setIsLoaded(false);
@@ -21,7 +23,7 @@ function useFetchImageData(pageCount) {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-  return { response, isLoaded };
+  return { response, isLoaded, availablePages };
 }
 
 export default useFetchImageData;
