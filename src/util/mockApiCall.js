@@ -2,7 +2,8 @@ import {
   API_RESPONSE_DELAY,
   IS_API_RESPONSE_SUCCESSFUL,
 } from "../constants/constants";
-import response from "../data/apiResponse";
+
+import data from "../data/data.json";
 
 export function mockPatchDeleteCall(
   url,
@@ -23,10 +24,11 @@ export function mockPatchDeleteCall(
 }
 
 export const mockApiGetCall = (url) => {
+  const response = JSON.parse(JSON.stringify(data));
   const end = +url.split("/").pop();
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(response.slice(end - 10, end));
+      resolve(response.response.docs.slice(end - 10, end));
     }, API_RESPONSE_DELAY);
   });
 };
